@@ -16,8 +16,8 @@ const TopBar = React.memo(() => {
       
       // Fetch data from multiple sources for better reliability
       const promises = [
-        fetch('http://localhost:3000/api/stocks/stock/^NSEI').catch(() => null),
-        fetch('http://localhost:3000/api/stocks/stock/^BSESN').catch(() => null),
+        fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:3000'}/api/stocks/stock/^NSEI`).catch(() => null),
+        fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:3000'}/api/stocks/stock/^BSESN`).catch(() => null),
       ];
 
       const [niftyResponse, sensexResponse] = await Promise.all(promises);

@@ -17,7 +17,7 @@ export default function PortfolioOverview() {
       try {
         console.log('Fetching portfolio data from API...');
         
-        const response = await fetch('http://localhost:3000/api/portfolio');
+        const response = await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:3000'}/api/portfolio`);
         
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

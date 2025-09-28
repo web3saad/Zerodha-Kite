@@ -179,7 +179,7 @@ const WatchList = () => {
       setLoading(true);
       const promises = stockSymbols.map(async (stock) => {
         try {
-          const response = await fetch(`http://localhost:3000/api/stocks/stock/${stock.symbol}`);
+          const response = await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:3000'}/api/stocks/stock/${stock.symbol}`);
           const data = await response.json();
           
           if (data.chart?.result?.[0]) {
@@ -275,7 +275,7 @@ const WatchList = () => {
     try {
       // Only add to positions if it's a BUY order
       if (orderData.orderType === 'BUY') {
-        const response = await fetch('http://localhost:3000/positions/add', {
+        const response = await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:3000'}/positions/add`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -326,7 +326,7 @@ const WatchList = () => {
   const addToWatchlist = async (stock) => {
     try {
       // Fetch real data for the stock
-      const response = await fetch(`http://localhost:3000/api/stocks/stock/${stock.symbol}`);
+      const response = await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:3000'}/api/stocks/stock/${stock.symbol}`);
       const data = await response.json();
       
       let newStock;
