@@ -6,7 +6,6 @@ const { UserModel } = require("../model/UserModel");
 
 module.exports.register = async (req, res) => {
   try {
-    console.log(req.body);
     const existingUser = await UserModel.findOne({ email: req.body.email });
     if (existingUser) {
       return res.status(400).json({ error: "Email already exists" });

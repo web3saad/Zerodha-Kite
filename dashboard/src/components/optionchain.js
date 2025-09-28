@@ -166,7 +166,7 @@ const OptionChain = () => {
     <div style={page}>
       {/* Header */}
       <div style={topBar}>
-        <div style={scrip}>HDFCBANK</div>
+
         <div style={price}>945.75</div>
         <div style={change}>-11.45 (-1.20%)</div>
 

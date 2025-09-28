@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
-import Menu from "./Menu";
 
 const TopBar = React.memo(() => {
   const [marketData, setMarketData] = useState([
@@ -17,8 +16,8 @@ const TopBar = React.memo(() => {
       
       // Fetch data from multiple sources for better reliability
       const promises = [
-        fetch('https://query1.finance.yahoo.com/v8/finance/chart/^NSEI').catch(() => null),
-        fetch('https://query1.finance.yahoo.com/v8/finance/chart/^BSESN').catch(() => null),
+        fetch('http://localhost:3000/api/stocks/stock/^NSEI').catch(() => null),
+        fetch('http://localhost:3000/api/stocks/stock/^BSESN').catch(() => null),
       ];
 
       const [niftyResponse, sensexResponse] = await Promise.all(promises);

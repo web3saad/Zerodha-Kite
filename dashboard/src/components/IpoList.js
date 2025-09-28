@@ -5,6 +5,45 @@ const font =
 
 const IpoList = () => {
   const [query, setQuery] = useState("");
+  const [activeTab, setActiveTab] = useState("IPO");
+
+  const handleApplyClick = (ipoData) => {
+    // Create URL parameters with IPO data
+    const params = new URLSearchParams({
+      name: ipoData.name,
+      sub: ipoData.sub,
+      date: ipoData.date,
+      price: ipoData.price,
+      min: ipoData.min,
+      lots: ipoData.lots,
+      action: ipoData.action
+    });
+    
+    // Open ipo.jsx page in a new tab with the IPO data
+    const url = `/ipo?${params.toString()}`;
+    window.open(url, '_blank');
+  };
+
+  const auctionRows = useMemo(
+    () => [
+      { name: "HINDCOPPER", eligibleQty: 1, lastPrice: 102.65, holdingPrice: 131.70, holdingPnl: -24.95, auctionNo: "#2531" },
+      { name: "HUDCO", eligibleQty: 1, lastPrice: 57.70, holdingPrice: 41.35, holdingPnl: 14.69, auctionNo: "#2532" },
+      { name: "IOC", eligibleQty: 5, lastPrice: 87.55, holdingPrice: 55.04, holdingPnl: 139.30, auctionNo: "#2539" },
+      { name: "IRCON", eligibleQty: 1, lastPrice: 80.80, holdingPrice: 46.10, holdingPnl: 39.41, auctionNo: "#2540" },
+      { name: "JPPOWER", eligibleQty: 6, lastPrice: "–", holdingPrice: 7.45, holdingPnl: -9.12, auctionNo: "#5003" },
+      { name: "L&TFH", eligibleQty: 2, lastPrice: 99.90, holdingPrice: 90.92, holdingPnl: 14.25, auctionNo: "#5013" },
+      { name: "NCC", eligibleQty: 1, lastPrice: 113.25, holdingPrice: 70.20, holdingPnl: 48.65, auctionNo: "#5033" },
+      { name: "NIACL", eligibleQty: 1, lastPrice: 119.45, holdingPrice: 138.25, holdingPnl: -21.20, auctionNo: "#5035" },
+      { name: "PNB", eligibleQty: 26, lastPrice: 49.30, holdingPrice: 37.96, holdingPnl: 379.30, auctionNo: "#5046" },
+      { name: "RCF", eligibleQty: 1, lastPrice: 107.15, holdingPrice: 102.15, holdingPnl: 6.10, auctionNo: "#7504" },
+      { name: "REDINGTON", eligibleQty: 1, lastPrice: 173.45, holdingPrice: 145.40, holdingPnl: 29.30, auctionNo: "#7505" },
+      { name: "RVNL", eligibleQty: 6, lastPrice: 121.85, holdingPrice: 69.83, holdingPnl: 412.90, auctionNo: "#7510" },
+      { name: "SBIN", eligibleQty: 13, lastPrice: 586.30, holdingPrice: 555.10, holdingPnl: 518.35, auctionNo: "#7518" },
+      { name: "SJVN", eligibleQty: 1, lastPrice: 37.00, holdingPrice: 30.45, holdingPnl: 7.55, auctionNo: "#7521" },
+      { name: "TATAMOTORS", eligibleQty: 1, lastPrice: 515.50, holdingPrice: 470.00, holdingPnl: 27.60, auctionNo: "#7529" },
+    ],
+    []
+  );
 
   const rows = useMemo(
     () => [
@@ -29,11 +68,16 @@ const IpoList = () => {
     []
   );
 
-  const filtered = rows.filter(
-    (r) =>
-      r.name.toLowerCase().includes(query.toLowerCase()) ||
-      r.sub.toLowerCase().includes(query.toLowerCase())
-  );
+  const filtered = activeTab === "IPO" 
+    ? rows.filter(
+        (r) =>
+          r.name.toLowerCase().includes(query.toLowerCase()) ||
+          r.sub.toLowerCase().includes(query.toLowerCase())
+      )
+    : auctionRows.filter(
+        (r) =>
+          r.name.toLowerCase().includes(query.toLowerCase())
+      );
 
   const styles = {
     page: { fontFamily: font, color: "#2f3337" },
@@ -45,7 +89,7 @@ const IpoList = () => {
       padding: "8px 12px",
       marginBottom: 8,
     },
-    tab: { fontSize: 14, color: "#6f7680", paddingBottom: 10 },
+    tab: { fontSize: 14, color: "#6f7680", paddingBottom: 10, cursor: "pointer" },
     tabActive: {
       fontSize: 14,
       color: "#ff6a3d",
@@ -140,10 +184,24 @@ const IpoList = () => {
     <div style={styles.page}>
       {/* Tabs */}
       <div style={styles.tabs}>
-        <div style={styles.tabActive}>IPO</div>
-        <div style={styles.tab}>Gov. securities</div>
-        <div style={styles.tab}>Auctions</div>
-        <div style={styles.tab}>Corporate actions</div>
+        <div 
+          style={activeTab === "IPO" ? styles.tabActive : styles.tab}
+          onClick={() => setActiveTab("IPO")}
+          role="button"
+          tabIndex={0}
+        >
+          IPO
+        </div>
+        {/* <div style={styles.tab}>Gov. securities</div> */}
+        <div 
+          style={activeTab === "Auctions" ? styles.tabActive : styles.tab}
+          onClick={() => setActiveTab("Auctions")}
+          role="button"
+          tabIndex={0}
+        >
+          Auctions
+        </div>
+        {/* <div style={styles.tab}>Corporate actions</div> */}
         <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 8 }}>
           <div style={styles.search}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
@@ -162,7 +220,9 @@ const IpoList = () => {
 
       {/* Header */}
       <div style={styles.header}>
-        <h3 style={styles.title}>IPOs ({filtered.length})</h3>
+        <h3 style={styles.title}>
+          {activeTab === "IPO" ? `IPOs (${filtered.length})` : `${activeTab} (${filtered.length})`}
+        </h3>
         <div style={styles.tools}>
           {/* right area intentionally empty to match screenshot spacing */}
         </div>
@@ -173,38 +233,74 @@ const IpoList = () => {
         <table style={styles.table}>
           <thead>
             <tr>
-              <th style={{ ...styles.th, width: "45%" }}>Instrument</th>
-              <th style={{ ...styles.th, width: "20%" }}>Date</th>
-              <th style={{ ...styles.th, width: "15%" }}>Price (₹)</th>
-              <th style={{ ...styles.th, width: "15%", textAlign: "right" }}>Min. amount (₹)</th>
-              <th style={{ ...styles.th, width: "5%" }} />
+              {activeTab === "IPO" ? (
+                <>
+                  <th style={{ ...styles.th, width: "45%" }}>Instrument</th>
+                  <th style={{ ...styles.th, width: "20%" }}>Date</th>
+                  <th style={{ ...styles.th, width: "15%" }}>Price (₹)</th>
+                  <th style={{ ...styles.th, width: "15%", textAlign: "right" }}>Min. amount (₹)</th>
+                  <th style={{ ...styles.th, width: "5%" }} />
+                </>
+              ) : (
+                <>
+                  <th style={{ ...styles.th, width: "20%" }}>Instrument</th>
+                  <th style={{ ...styles.th, width: "15%", textAlign: "center" }}>Eligible qty.</th>
+                  <th style={{ ...styles.th, width: "15%", textAlign: "right" }}>Last price</th>
+                  <th style={{ ...styles.th, width: "15%", textAlign: "right" }}>Holding price</th>
+                  <th style={{ ...styles.th, width: "15%", textAlign: "right" }}>Holding P&L</th>
+                  <th style={{ ...styles.th, width: "20%", textAlign: "right" }}>Auction no.</th>
+                </>
+              )}
             </tr>
           </thead>
 
           <tbody>
             {filtered.map((r) => (
               <tr key={r.name}>
-                <td style={styles.td}>
-                  <div style={styles.name}>
-                    <div>
-                      <div style={{ fontWeight: 600 }}>{r.name} <span style={styles.sme}>sme</span></div>
-                      <div style={styles.sub}>{r.sub}</div>
-                    </div>
-                  </div>
-                </td>
-                <td style={styles.td}>{r.date}</td>
-                <td style={{ ...styles.td, ...styles.price }}>{r.price}</td>
-                <td style={{ ...styles.td, ...styles.minAmt }}>
-                  {r.min.toLocaleString("en-IN")}
-                  <div style={styles.lots}>{r.lots} Qty.</div>
-                </td>
-                <td style={styles.td}>
-                  <button
-                    style={r.action === "Pre-apply" ? styles.btnSecondary : styles.btn}
-                  >
-                    {r.action}
-                  </button>
-                </td>
+                {activeTab === "IPO" ? (
+                  <>
+                    <td style={styles.td}>
+                      <div style={styles.name}>
+                        <div>
+                          <div style={{ fontWeight: 600 }}>{r.name} <span style={styles.sme}>sme</span></div>
+                          <div style={styles.sub}>{r.sub}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td style={styles.td}>{r.date}</td>
+                    <td style={{ ...styles.td, ...styles.price }}>{r.price}</td>
+                    <td style={{ ...styles.td, ...styles.minAmt }}>
+                      {r.min.toLocaleString("en-IN")}
+                      <div style={styles.lots}>{r.lots} Qty.</div>
+                    </td>
+                    <td style={styles.td}>
+                      <button
+                        style={r.action === "Pre-apply" ? styles.btnSecondary : styles.btn}
+                        onClick={() => handleApplyClick(r)}
+                      >
+                        {r.action}
+                      </button>
+                    </td>
+                  </>
+                ) : (
+                  <>
+                    <td style={styles.td}>
+                      <div style={{ fontWeight: 600 }}>{r.name}</div>
+                    </td>
+                    <td style={{ ...styles.td, textAlign: "center" }}>{r.eligibleQty}</td>
+                    <td style={{ ...styles.td, textAlign: "right" }}>{r.lastPrice}</td>
+                    <td style={{ ...styles.td, textAlign: "right" }}>{r.holdingPrice}</td>
+                    <td style={{ 
+                      ...styles.td, 
+                      textAlign: "right",
+                      color: r.holdingPnl > 0 ? "#00b386" : "#ff6161",
+                      fontWeight: 500
+                    }}>
+                      {r.holdingPnl > 0 ? "+" : ""}{r.holdingPnl}
+                    </td>
+                    <td style={{ ...styles.td, textAlign: "right", color: "#6f7680" }}>{r.auctionNo}</td>
+                  </>
+                )}
               </tr>
             ))}
           </tbody>

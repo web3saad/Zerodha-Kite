@@ -1,28 +1,28 @@
-// deposit.jsx — centered “Deposit funds” screen, styled to match your screenshot exactly
 import React from "react";
 
 const Deposit = () => {
   const page = {
     minHeight: "100vh",
-    background: "#f6f7fb", // soft grey like screenshot
+    background: "#f5f6fa",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    padding: "48px 16px",
+    padding: "40px 12px",
     fontFamily:
       "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif",
     color: "#2f3337",
+    fontWeight: 400,
   };
 
   const card = {
-    width: 560,
+    width: 480,
     background: "#fff",
     borderRadius: 8,
-    boxShadow: "0 8px 30px rgba(0,0,0,.06)",
-    border: "1px solid #eef1f4",
+    boxShadow: "0 8px 24px rgba(0,0,0,.06)",
+    border: "1px solid #edf0f3",
   };
 
-  const inner = { padding: "28px 32px 24px" };
+  const inner = { padding: "20px 24px 16px" };
 
   const topBrand = {
     display: "flex",
@@ -30,17 +30,18 @@ const Deposit = () => {
     justifyContent: "center",
     gap: 8,
     color: "#2f6bd7",
-    fontWeight: 700,
     letterSpacing: 0.2,
-    marginBottom: 6,
+    marginBottom: 2,
+    fontSize: 16,
+    fontWeight: 500,
   };
 
   const title = {
     textAlign: "center",
     margin: 0,
-    paddingBottom: 18,
-    fontSize: 22,
-    fontWeight: 700,
+    paddingBottom: 14,
+    fontSize: 26,
+    fontWeight: 600,
     color: "#2f3337",
   };
 
@@ -48,32 +49,33 @@ const Deposit = () => {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    marginBottom: 16,
+    marginBottom: 10,
     color: "#6f7680",
-    fontSize: 14,
+    fontSize: 16,
   };
+
+  const field = { marginTop: 10 };
 
   const label = {
-    fontSize: 12,
+    fontSize: 16,
     color: "#6f7680",
-    margin: "14px 0 6px",
+    margin: "12px 0 8px",
+    fontWeight: 600,
   };
 
-  const inputWrap = {
-    position: "relative",
-    width: "100%",
-  };
+  const inputWrap = { position: "relative", width: "100%" };
 
   const input = {
     width: "100%",
-    height: 42,
+    height: 48,
     border: "1px solid #e7ebee",
     borderRadius: 6,
-    padding: "0 12px 0 40px",
+    padding: "0 14px 0 38px",
     outline: "none",
-    fontSize: 14,
+    fontSize: 16,
     color: "#2f3337",
     background: "#fff",
+    boxSizing: "border-box",
   };
 
   const leftIcon = {
@@ -82,27 +84,28 @@ const Deposit = () => {
     top: "50%",
     transform: "translateY(-50%)",
     color: "#9aa1a8",
-    fontSize: 14,
+    fontSize: 13,
   };
 
   const select = {
     width: "100%",
-    height: 42,
+    height: 48,
     border: "1px solid #e7ebee",
     borderRadius: 6,
-    padding: "0 36px 0 12px",
+    padding: "0 34px 0 12px",
     outline: "none",
-    fontSize: 14,
+    fontSize: 16,
     color: "#2f3337",
     appearance: "none",
     background:
-      "#fff url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"%239aa1a8\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"6 9 12 15 18 9\"/></svg>') no-repeat right 12px center",
+      "#fff url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"%239aa1a8\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"6 9 12 15 18 9\"/></svg>') no-repeat right 10px center",
     backgroundSize: 16,
+    boxSizing: "border-box",
   };
 
   const subnote = {
     marginTop: 6,
-    fontSize: 11.5,
+    fontSize: 13,
     color: "#9aa1a8",
   };
 
@@ -111,14 +114,14 @@ const Deposit = () => {
   const radios = {
     display: "flex",
     alignItems: "center",
-    gap: 18,
+    gap: 20,
     marginTop: 8,
+    fontSize: 16,
   };
 
   const badge = {
     marginLeft: 8,
     fontSize: 11,
-    fontWeight: 700,
     color: "#19a35b",
     background: "rgba(25,163,91,.12)",
     border: "1px solid rgba(25,163,91,.35)",
@@ -129,7 +132,6 @@ const Deposit = () => {
   const fee = {
     marginLeft: 8,
     fontSize: 11,
-    fontWeight: 600,
     color: "#6f7680",
     background: "#f3f5f8",
     border: "1px solid #e7ebee",
@@ -139,19 +141,20 @@ const Deposit = () => {
 
   const btn = {
     width: "100%",
-    height: 42,
-    marginTop: 18,
-    background: "#387ef5",
+    height: 48,
+    marginTop: 16,
+    background: "#2f6bd7",
     color: "#fff",
     border: "none",
     borderRadius: 6,
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: 600,
     cursor: "pointer",
+    boxSizing: "border-box",
   };
 
   const foot = {
-    padding: "0 32px 24px",
+    padding: "0 24px 16px",
     textAlign: "center",
     fontSize: 12,
     color: "#8b9197",
@@ -163,7 +166,7 @@ const Deposit = () => {
         <div style={inner}>
           {/* brand */}
           <div style={topBrand}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
               <path d="M4 12 10 6v12L4 12Z" fill="#ff6a3d" />
             </svg>
             <span>ZERODHA</span>
@@ -171,14 +174,17 @@ const Deposit = () => {
 
           <h2 style={title}>Deposit funds</h2>
 
-          {/* name + user */}
-          <div style={rowBetween}>
-            <span>Mahammad Sayad</span>
-            <span style={{ color: "#8b9197" }}>FJP018</span>
+          {/* name + id */}
+          <div>
+            <div style={rowBetween}>
+              <span style={{ color: "#2f3337" }}>Mahammad Sayad</span>
+              <span style={{ color: "#8b9197" }}>FJP018</span>
+            </div>
+            <div style={{ height: 1, background: "#eceff3", marginBottom: 8 }} />
           </div>
 
           {/* Amount */}
-          <div>
+          <div style={field}>
             <div style={label}>Amount</div>
             <div style={inputWrap}>
               <span style={leftIcon}>₹</span>
@@ -187,18 +193,18 @@ const Deposit = () => {
           </div>
 
           {/* Segment */}
-          <div>
+          <div style={field}>
             <div style={label}>Segment</div>
-            <select style={select} defaultValue="eq">
+            <select style={select} defaultValue="eq" aria-label="Segment">
               <option value="eq">Equity/Derivatives/Currency</option>
               <option value="mcx">Commodity</option>
             </select>
           </div>
 
           {/* Account */}
-          <div>
+          <div style={field}>
             <div style={label}>Account</div>
-            <select style={select} defaultValue="dcb">
+            <select style={select} defaultValue="dcb" aria-label="Account">
               <option value="dcb">DCB BANK LTD - XXX 2877</option>
               <option value="icici">ICICI BANK - XXX 1023</option>
             </select>
@@ -208,13 +214,17 @@ const Deposit = () => {
           </div>
 
           {/* VPA */}
-          <div>
+          <div style={field}>
             <div style={label}>Virtual payment address (UPI ID)</div>
-            <input style={{ ...input, paddingLeft: 12 }} defaultValue="9606776950-2@ybl" />
+            <input
+              style={{ ...input, paddingLeft: 12 }}
+              defaultValue="9606776950-2@ybl"
+              aria-label="UPI ID"
+            />
           </div>
 
           {/* Payment mode */}
-          <div>
+          <div style={field}>
             <div style={label}>Payment mode</div>
             <div style={radios}>
               <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}>

@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
@@ -6,6 +6,10 @@ const Menu = React.memo(() => {
   const [selectedMenu, SetSelectedMenu] = useState(0);
   const [isProfileDropdownOpen, SetIsProfileDropdownOpen] = useState(false);
   const [privacyOn, setPrivacyOn] = useState(true);
+  const [marketData, setMarketData] = useState([
+    { name: "NIFTY 50", last: "24658.84", change: "-232.01", pct: "(-0.93%)", isPositive: false },
+    { name: "SENSEX", last: "80426.01", change: "-733.67", pct: "(-0.90%)", isPositive: false },
+  ]);
   const { logout } = useAuth();
 
   const handleMenuClick = useCallback((index) => SetSelectedMenu(index), []);
@@ -14,23 +18,136 @@ const Menu = React.memo(() => {
     [isProfileDropdownOpen]
   );
 
+  const fetchMarketData = useCallback(async () => {
+    try {
+      const promises = [
+        fetch('http://localhost:3000/api/stocks/stock/^NSEI').catch(() => null),
+        fetch('http://localhost:3000/api/stocks/stock/^BSESN').catch(() => null),
+      ];
+
+      const [niftyResponse, sensexResponse] = await Promise.all(promises);
+      
+      let niftyData = null;
+      let sensexData = null;
+      
+      if (niftyResponse) {
+        niftyData = await niftyResponse.json();
+      }
+      
+      if (sensexResponse) {
+        sensexData = await sensexResponse.json();
+      }
+
+      // Use real data if available, otherwise keep default values
+      const updates = [];
+      
+      if (niftyData?.chart?.result?.[0]) {
+        const result = niftyData.chart.result[0];
+        const currentPrice = result.meta.regularMarketPrice || result.meta.previousClose;
+        const previousClose = result.meta.previousClose;
+        const change = currentPrice - previousClose;
+        const changePercent = (change / previousClose) * 100;
+        
+        updates.push({
+          name: "NIFTY 50",
+          last: currentPrice.toFixed(2),
+          change: change.toFixed(2),
+          pct: `(${changePercent >= 0 ? '+' : ''}${changePercent.toFixed(2)}%)`,
+          isPositive: change >= 0
+        });
+      } else {
+        updates.push(marketData[0]);
+      }
+      
+      if (sensexData?.chart?.result?.[0]) {
+        const result = sensexData.chart.result[0];
+        const currentPrice = result.meta.regularMarketPrice || result.meta.previousClose;
+        const previousClose = result.meta.previousClose;
+        const change = currentPrice - previousClose;
+        const changePercent = (change / previousClose) * 100;
+        
+        updates.push({
+          name: "SENSEX",
+          last: currentPrice.toFixed(2),
+          change: change.toFixed(2),
+          pct: `(${changePercent >= 0 ? '+' : ''}${changePercent.toFixed(2)}%)`,
+          isPositive: change >= 0
+        });
+      } else {
+        updates.push(marketData[1]);
+      }
+      
+      setMarketData(updates);
+    } catch (error) {
+      console.error('Error fetching market data:', error);
+    }
+  }, [marketData]);
+
+  useEffect(() => {
+    fetchMarketData();
+    const interval = setInterval(fetchMarketData, 120000); // Update every 2 minutes
+    return () => clearInterval(interval);
+  }, [fetchMarketData]);
+
   // ====== existing memo styles (unchanged where not necessary) ======
   const navWrap = useMemo(
     () => ({
       display: "flex",
       alignItems: "center",
       gap: 16,
-      padding: "0",
+      padding: "0 32px",
       borderBottom: "1px solid #eee",
       background: "#fff",
-      maxWidth: "1200px",
+      maxWidth: "2000px",
       margin: "0 auto",
-      paddingLeft: "20px",
-      paddingRight: "20px",
       height: "50px",
+      justifyContent: "space-between",
     }),
     []
   );
+
+  const marketDataWrap = useMemo(
+    () => ({
+      display: "flex",
+      alignItems: "center",
+      gap: 24,
+      minWidth: "320px",
+      marginLeft: "8px", // Move it a little to the right
+    }),
+    []
+  );
+
+  const marketItemStyle = useMemo(
+    () => ({
+      display: "flex",
+      alignItems: "baseline",
+      gap: 6,
+      fontSize: "12px",
+    }),
+    []
+  );
+
+  const marketNameStyle = useMemo(
+    () => ({
+      fontWeight: 600,
+      color: "#333",
+      textTransform: "uppercase",
+      fontSize: "11px",
+    }),
+    []
+  );
+
+  const marketPriceStyle = useMemo(() => ({
+    fontWeight: 700,
+    fontSize: "13px",
+    fontFamily: "monospace",
+  }), []);
+
+  const marketChangeStyle = useMemo(() => ({
+    fontSize: "10px",
+    fontWeight: 600,
+    fontFamily: "monospace",
+  }), []);
 
   const centerWrap = useMemo(
     () => ({ flex: 1, display: "flex", justifyContent: "center" }),
@@ -216,8 +333,30 @@ const Menu = React.memo(() => {
 
   return (
     <div className="menu-container" style={navWrap}>
-      {/* Left: Logo */}
-      <img src="/logo.png" alt="logo" style={logoStyle} />
+      {/* Left: Market Data */}
+      <div style={marketDataWrap}>
+        {marketData.map((item, index) => (
+          <div key={item.name} style={marketItemStyle}>
+            <span style={marketNameStyle}>{item.name}</span>
+            <span 
+              style={{ 
+                ...marketPriceStyle, 
+                color: item.isPositive ? "#4caf50" : "#e53935" 
+              }}
+            >
+              {item.last}
+            </span>
+            <span 
+              style={{ 
+                ...marketChangeStyle, 
+                color: item.isPositive ? "#4caf50" : "#e53935" 
+              }}
+            >
+              {item.change} {item.pct}
+            </span>
+          </div>
+        ))}
+      </div>
 
       {/* Center: Menus */}
       <div className="menus" style={centerWrap}>

@@ -1,6 +1,6 @@
 import { BarChartOutlined, MoreHoriz } from "@mui/icons-material";
 import { Grow, Tooltip } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 
@@ -8,15 +8,77 @@ function WatchListAction({ uid, symbol = "HDFCBANK", bse = "₹945.15", nse = "�
   const [showTicket, setShowTicket] = useState(false);
   const [side, setSide] = useState("buy"); // "buy" | "sell"
   const [qty, setQty] = useState(1);
-  const [price, setPrice] = useState(945.15);
+  const [price, setPrice] = useState(() => {
+    // Extract price from bse prop, fallback to 945.15
+    const priceMatch = bse.match(/₹?([\d,]+\.?\d*)/);
+    return priceMatch ? parseFloat(priceMatch[1].replace(/,/g, '')) : 945.15;
+  });
   const [intraday, setIntraday] = useState(false);
   const navigate = useNavigate();
+
+  // Update price when bse prop changes
+  useEffect(() => {
+    const priceMatch = bse.match(/₹?([\d,]+\.?\d*)/);
+    const newPrice = priceMatch ? parseFloat(priceMatch[1].replace(/,/g, '')) : 945.15;
+    setPrice(newPrice);
+  }, [bse]);
 
   const openBuy = () => { setSide("buy"); setShowTicket(true); };
   const openSell = () => { setSide("sell"); setShowTicket(true); };
   const closeTicket = () => setShowTicket(false);
   const openChart = () => {
     navigate(`/chart/${symbol}`);
+  };
+
+  const handleOrderSubmit = async () => {
+    try {
+      const orderData = {
+        stock: {
+          symbol: symbol,
+          name: symbol,
+          price: price.toString()
+        },
+        orderType: side.toUpperCase(),
+        quantity: qty,
+        price: price,
+        exchange: 'BSE', // Default to BSE
+        total: (qty * price).toFixed(2)
+      };
+
+      // Only add to positions if it's a BUY order
+      if (side === 'buy') {
+        const response = await fetch('http://localhost:3000/positions/add', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            stock: orderData.stock,
+            orderType: orderData.orderType,
+            quantity: orderData.quantity,
+            price: orderData.price,
+            exchange: orderData.exchange
+          }),
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          console.log('Position added successfully:', result);
+          alert(`${orderData.orderType} order placed successfully!\n\nStock: ${orderData.stock.name}\nQuantity: ${orderData.quantity}\nPrice: ₹${orderData.price.toFixed(2)}\nTotal: ₹${orderData.total}\n\nPosition added to your portfolio!`);
+        } else {
+          console.error('Failed to add position');
+          alert(`${orderData.orderType} order placed successfully!\n\nStock: ${orderData.stock.name}\nQuantity: ${orderData.quantity}\nPrice: ₹${orderData.price.toFixed(2)}\nTotal: ₹${orderData.total}\n\nNote: Failed to add to positions.`);
+        }
+      } else {
+        // For SELL orders, just show success message
+        alert(`${orderData.orderType} order placed successfully!\n\nStock: ${orderData.stock.name}\nQuantity: ${orderData.quantity}\nPrice: ₹${orderData.price.toFixed(2)}\nTotal: ₹${orderData.total}`);
+      }
+
+      closeTicket();
+    } catch (error) {
+      console.error('Error submitting order:', error);
+      alert(`Error placing ${side.toUpperCase()} order. Please try again.`);
+    }
   };
 
   // ===== Styles =====
@@ -192,7 +254,7 @@ function WatchListAction({ uid, symbol = "HDFCBANK", bse = "₹945.15", nse = "�
                   </div>
                 </div>
 
-                <button style={primaryBtn}>{side === "buy" ? "Buy" : "Sell"}</button>
+                <button style={primaryBtn} onClick={handleOrderSubmit}>{side === "buy" ? "Buy" : "Sell"}</button>
                 <button style={secondaryBtn} onClick={closeTicket}>Cancel</button>
               </div>
             </div>

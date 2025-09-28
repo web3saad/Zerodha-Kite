@@ -10,7 +10,6 @@ import Orders from "./Orders";
 import Positions from "./Positions";
 import Summary from "./Summary";
 import WatchList from "./WatchList";
-import TopBar from "./TopBar";
 import Menu from "./Menu";
 import StockChart from "./StockChart";
 import OptionChain from "./optionchain";
@@ -22,7 +21,6 @@ const Dashboard = () => {
       <Menu />
       <div className="dashboard-container">
         <div className="watchlist-section">
-          <TopBar />
           <GeneralContextProvider>
             <WatchList />
           </GeneralContextProvider>
