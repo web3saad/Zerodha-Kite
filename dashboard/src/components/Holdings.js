@@ -155,7 +155,7 @@ export default function Holdings() {
       <div className="wrap inter">
         {/* Header */}
         <div className="topRow">
-          <h3 className="title">Holdings ({holdingsData.count})</h3>
+          <h3 className="title">Holdings ({holdingsData?.count || 0})</h3>
           <div className="controls">
             <select className="select" defaultValue="All stocks">
               <option>All stocks</option>
@@ -173,22 +173,22 @@ export default function Holdings() {
         <div className="metrics">
           <div>
             <div className="mlabel">Total investment</div>
-            <div className="mval">{holdingsData.metrics.totalInvestment}</div>
+            <div className="mval">{holdingsData?.metrics?.totalInvestment || '0'}</div>
           </div>
           <div>
             <div className="mlabel">Current value</div>
-            <div className="mval">{holdingsData.totals?.currentValue || holdingsData.metrics.currentValue}</div>
+            <div className="mval">{holdingsData?.totals?.currentValue || holdingsData?.metrics?.currentValue || '0'}</div>
           </div>
           <div>
             <div className="mlabel">Day&apos;s P&amp;L</div>
-            <div className="mval"><span className="green">{holdingsData.metrics.daysPnl}</span> <span className="muted">(approx)</span></div>
+            <div className="mval"><span className="green">{holdingsData?.metrics?.daysPnl || '0'}</span> <span className="muted">(approx)</span></div>
           </div>
           <div>
             <div className="mlabel">Total P&amp;L</div>
             <div className="mval">
               <span className="green">
-                {holdingsData.totals?.totalPnl || holdingsData.metrics.totalPnl} 
-                <span className="muted">({holdingsData.totals?.totalPnlPercent || holdingsData.metrics.totalPnlPercentage}%)</span>
+                {holdingsData?.totals?.totalPnl || holdingsData?.metrics?.totalPnl || '0'}
+                <span className="muted">({holdingsData?.totals?.totalPnlPercent || holdingsData?.metrics?.totalPnlPercentage || '0'}%)</span>
               </span>
             </div>
           </div>
@@ -210,7 +210,7 @@ export default function Holdings() {
               </tr>
             </thead>
             <tbody>
-              {holdingsData.holdings.map((holding, i) => {
+              {(holdingsData?.holdings || []).map((holding, i) => {
                 const pnlClass = String(holding.pnl).startsWith("-") ? "loss" : "profit";
                 const netClass = String(holding.netChg).startsWith("-") ? "loss" : "profit";
                 const dayClass = String(holding.dayChg).startsWith("-") ? "loss" : "profit";
@@ -263,7 +263,7 @@ export default function Holdings() {
         </div>
 
         <div className="legendRow">
-          <div style={{ fontSize:18 }}>₹{holdingsData.metrics.currentValue}</div>
+          <div style={{ fontSize:18 }}>₹{holdingsData?.metrics?.currentValue || holdingsData?.totals?.currentValue || '0'}</div>
           <div className="legend">
             <label><span className="dot filled" /> Current value</label>
             <label><span className="dot" /> Investment value</label>

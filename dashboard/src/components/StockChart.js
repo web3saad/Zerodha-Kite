@@ -1,6 +1,24 @@
-// --- replace your current StockChart with this version ---
 import React, { useState, useEffect, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+
+// --- Style constants ---
+const root={width:"100%",height:"auto",minHeight:"600px",maxHeight:"800px",background:"#fff",display:"flex",flexDirection:"column",fontFamily:"Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif",color:"#2f3337"};
+const topTabs={display:"flex",alignItems:"center",gap:18,padding:"8px 12px 0 12px",borderBottom:"1px solid #eceff2"};
+const tab={padding:"10px 6px",color:"#6f7680",fontSize:14};
+const tabActive={...tab,color:"#ff6a3d",borderBottom:"2px solid #ff6a3d",fontWeight:600};
+const toolbar={display:"flex",alignItems:"center",gap:14,padding:"8px 12px",borderBottom:"1px solid #f0f2f4"};
+const iconDot={width:14,height:14,borderRadius:3,background:"#e8edf7",border:"1px solid #d6deef"};
+const railAndChart={flex:1,display:"grid",gridTemplateColumns:"260px 1fr",minHeight:"500px",maxHeight:"650px"};
+const rail={borderRight:"1px solid #eef1f4",padding:"12px",display:"flex",flexDirection:"column",gap:10};
+const searchBox={display:"flex",alignItems:"center",gap:8,border:"1px solid #e8eaed",borderRadius:4,padding:"6px 8px",color:"#6f7680",fontSize:14};
+const railItem={padding:"8px 0",borderBottom:"1px solid #f3f5f7",fontSize:13,display:"flex",justifyContent:"space-between",alignItems:"center"};
+const compare={color:"#6f7680",fontSize:12,marginTop:6};
+const chartWrap={position:"relative",display:"flex",alignItems:"center",justifyContent:"center",background:"#fff",padding:"20px"};
+const bottomBar={display:"flex",alignItems:"center",justifyContent:"space-between",padding:"8px 10px",borderTop:"1px solid #eceff2"};
+const chip=(active)=>({padding:"4px 8px",border:`1px solid ${active?"#387ef5":"#e0e3e7"}`,borderRadius:4,background:active?"#387ef5":"#fff",color:active?"#fff":"#6b7280",fontSize:12,cursor:"pointer",marginLeft:6});
+const changeBadge={display:"inline-flex",alignItems:"center",gap:6,fontSize:12,color:"#00c896",opacity:0.95};
+const tfList=["1D","5D","1M","3M","6M","YTD","1Y","5Y","All"];
+// --- replace your current StockChart with this version ---
 
 const StockChart = ({ symbol: initialSymbol }) => {
   const { symbol: urlSymbol } = useParams();
@@ -10,6 +28,7 @@ const StockChart = ({ symbol: initialSymbol }) => {
   const [chartData, setChartData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [timeframe, setTimeframe] = useState("1D");
+  const [chartURL, setChartURL] = useState(null);
 
   useEffect(() => { fetchChartData(); }, [currentSymbol, timeframe]); // eslint-disable-line
   useEffect(() => { if (urlSymbol && urlSymbol !== currentSymbol) setCurrentSymbol(urlSymbol); }, [urlSymbol, currentSymbol]);
@@ -20,6 +39,7 @@ const StockChart = ({ symbol: initialSymbol }) => {
   async function fetchChartData() {
     try {
       setLoading(true);
+      setChartURL(null);
       const interval = intervalMap[timeframe] || "1d";
       const range = rangeMap[timeframe] || "1mo";
       const attempts = [
@@ -37,7 +57,7 @@ const StockChart = ({ symbol: initialSymbol }) => {
           if (j?.chart?.result?.[0]?.timestamp?.length) { parsed = j.chart.result[0]; break; }
         } catch {}
       }
-      if (!parsed) { setChartData(generateMock(currentSymbol, timeframe)); return; }
+      if (!parsed) { setChartData(generateMock(currentSymbol, timeframe)); setChartURL(drawChartURL()); return; }
       const ts = parsed.timestamp || [];
       const q = parsed.indicators?.quote?.[0] || {};
       const pts = ts.map((t,i)=>({
@@ -48,11 +68,12 @@ const StockChart = ({ symbol: initialSymbol }) => {
         close:q.close?.[i] ?? 0,
         volume:q.volume?.[i] ?? 0
       })).filter(p=>p.close>0);
-      if (!pts.length) { setChartData(generateMock(currentSymbol, timeframe)); return; }
+      if (!pts.length) { setChartData(generateMock(currentSymbol, timeframe)); setChartURL(drawChartURL()); return; }
       const last = pts[pts.length-1]?.close ?? 0;
       const prev = parsed.meta?.previousClose ?? pts[0]?.close ?? last;
       const change = last - prev;
       setChartData({ symbol: parsed.meta?.symbol || currentSymbol, currentPrice:last, previousClose:prev, change, changePercent: prev ? (change/prev)*100 : 0, points: pts });
+      setChartURL(drawChartURL());
     } finally { setLoading(false); }
   }
 
@@ -122,32 +143,8 @@ const StockChart = ({ symbol: initialSymbol }) => {
       if(h<1.5){ ctx.beginPath(); ctx.moveTo(x-cw/2,yO); ctx.lineTo(x+cw/2,yO); ctx.stroke(); }
       else { ctx.fillRect(x-cw/2,y,cw,h); }
     });
-
-    ctx.globalAlpha=0.06; ctx.fillStyle="#2f3337"; ctx.font="bold 42px Arial";
-    ctx.fillText("ZERODHA", paddingL, height-12); ctx.globalAlpha=1;
-
-    return canvas.toDataURL();
+    return canvas.toDataURL('image/png');
   }
-
-  const chartURL = drawChartURL();
-
-  // ---------- styles (unchanged) ----------
-  const root={width:"100%",height:"auto",minHeight:"600px",maxHeight:"800px",background:"#fff",display:"flex",flexDirection:"column",fontFamily:"Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif",color:"#2f3337"};
-  const topTabs={display:"flex",alignItems:"center",gap:18,padding:"8px 12px 0 12px",borderBottom:"1px solid #eceff2"};
-  const tab={padding:"10px 6px",color:"#6f7680",fontSize:14};
-  const tabActive={...tab,color:"#ff6a3d",borderBottom:"2px solid #ff6a3d",fontWeight:600};
-  const toolbar={display:"flex",alignItems:"center",gap:14,padding:"8px 12px",borderBottom:"1px solid #f0f2f4"};
-  const iconDot={width:14,height:14,borderRadius:3,background:"#e8edf7",border:"1px solid #d6deef"};
-  const railAndChart={flex:1,display:"grid",gridTemplateColumns:"260px 1fr",minHeight:"500px",maxHeight:"650px"};
-  const rail={borderRight:"1px solid #eef1f4",padding:"12px",display:"flex",flexDirection:"column",gap:10};
-  const searchBox={display:"flex",alignItems:"center",gap:8,border:"1px solid #e8eaed",borderRadius:4,padding:"6px 8px",color:"#6f7680",fontSize:14};
-  const railItem={padding:"8px 0",borderBottom:"1px solid #f3f5f7",fontSize:13,display:"flex",justifyContent:"space-between",alignItems:"center"};
-  const compare={color:"#6f7680",fontSize:12,marginTop:6};
-  const chartWrap={position:"relative",display:"flex",alignItems:"center",justifyContent:"center",background:"#fff",padding:"20px"};
-  const bottomBar={display:"flex",alignItems:"center",justifyContent:"space-between",padding:"8px 10px",borderTop:"1px solid #eceff2"};
-  const chip=(active)=>({padding:"4px 8px",border:`1px solid ${active?"#387ef5":"#e0e3e7"}`,borderRadius:4,background:active?"#387ef5":"#fff",color:active?"#fff":"#6b7280",fontSize:12,cursor:"pointer",marginLeft:6});
-  const changeBadge={display:"inline-flex",alignItems:"center",gap:6,fontSize:12,color:chartData?.change>=0?"#00c896":"#e53e3e",opacity:0.95};
-  const tfList=["1D","5D","1M","3M","6M","YTD","1Y","5Y","All"];
 
   const handleSymbolClick=(sym)=>{ setCurrentSymbol(sym); navigate(`/chart/${sym}`); };
 
@@ -156,16 +153,13 @@ const StockChart = ({ symbol: initialSymbol }) => {
       {/* Tabs */}
       <div style={topTabs}>
         <div style={tabActive}>Chart</div>
-        <a
-          // href="#"
-          style={{ ...tab, textDecoration: "none", cursor: "pointer" }}
-          onClick={e => {
-            e.preventDefault();
-            navigate("/optionchain");
-          }}
+        <button
+          type="button"
+          style={{ ...tab, textDecoration: "none", cursor: "pointer", background: "none", border: "none", padding: 0 }}
+          onClick={() => navigate("/optionchain")}
         >
           Option chain
-        </a>
+        </button>
         <button 
           onClick={() => navigate('/')} 
           style={{

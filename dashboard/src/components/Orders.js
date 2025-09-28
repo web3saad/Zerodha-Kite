@@ -145,7 +145,7 @@ function OrdersView(){
           >
             {loading ? 'Refreshing...' : 'Refresh'}
           </button>
-          <a className="linkBlue">Download</a>
+          <button className="linkBlue" type="button">Download</button>
         </div>
       </div>
 
@@ -197,9 +197,9 @@ function OrdersView(){
           >
             {loading ? 'Refreshing...' : 'Refresh'}
           </button>
-          {/* <a className="linkBlue">Contract note</a>
-          <a className="linkBlue">View history</a> */}
-          <a className="linkBlue">Download</a>
+          {/* <span className="linkBlue">Contract note</span>
+          <span className="linkBlue">View history</span> */}
+          <button className="linkBlue" type="button">Download</button>
         </div>
       </div>
 
@@ -252,7 +252,7 @@ function GTTView(){
         <div style={{ display:'flex', alignItems:'center', gap:14 }}>
           <button className="btn-blue">New GTT</button>
           <div className="search"><SearchIcon/> <span>Search</span></div>
-          <a className="linkBlue">Download</a>
+          <button className="linkBlue" type="button">Download</button>
         </div>
       </div>
 
@@ -431,14 +431,14 @@ function AlertsView(){
               <tr key={i}>
                 <td><input type="checkbox" style={{ width:16, height:16 }} /></td>
                 <td>
-                  <div><a className="blue-link-text">{r.name}</a></div>
+                  <div><span className="blue-link-text">{r.name}</span></div>
                   <div className="muted">{r.sub}</div>
                 </td>
                 <td>
                   <span className="pill" style={{ background: r.status==='ENABLED'? '#eaf8ed':'#ffece6', color: r.status==='ENABLED'? '#2fb344':'#ff7d5a', padding:'6px 10px', fontSize:12 }}>{r.status}</span>
                 </td>
                 <td className="right">
-                  <a className="blue-link-text">{r.trig}</a>
+                  <span className="blue-link-text">{r.trig}</span>
                 </td>
                 <td>{r.created}</td>
               </tr>

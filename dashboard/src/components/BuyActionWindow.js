@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './BuyActionWindow.css';
-import { useAuth } from "../hooks/useAuth";
+// import { useAuth } from "../hooks/useAuth";
 
 const BuyActionWindow = ({ stock, orderType, onClose, onSubmit }) => {
   const [selectedExchange, setSelectedExchange] = useState('BSE');

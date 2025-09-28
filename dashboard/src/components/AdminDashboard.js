@@ -553,7 +553,7 @@ const AdminDashboard = () => {
   const handleHoldingItemChange = (index, field, value) => {
     setHoldingsDetailData(prev => ({
       ...prev,
-      holdings: prev.holdings.map((item, i) => 
+      holdings: (prev?.holdings || []).map((item, i) =>
         i === index ? { ...item, [field]: value } : item
       )
     }));
@@ -562,7 +562,7 @@ const AdminDashboard = () => {
   const addHoldingItem = () => {
     setHoldingsDetailData(prev => ({
       ...prev,
-      holdings: [...prev.holdings, {
+      holdings: [...(prev?.holdings || []), {
         instrument: '',
         qty: 0,
         avgCost: '',
@@ -572,15 +572,15 @@ const AdminDashboard = () => {
         netChg: '',
         dayChg: ''
       }],
-      count: prev.holdings.length + 1
+      count: (prev?.holdings?.length || 0) + 1
     }));
   };
 
   const removeHoldingItem = (index) => {
     setHoldingsDetailData(prev => ({
       ...prev,
-      holdings: prev.holdings.filter((_, i) => i !== index),
-      count: prev.holdings.length - 1
+      holdings: (prev?.holdings || []).filter((_, i) => i !== index),
+      count: (prev?.holdings?.length || 0) - 1
     }));
   };
 

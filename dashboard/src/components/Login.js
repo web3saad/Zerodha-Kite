@@ -216,10 +216,10 @@ export default function Login() {
       {/* Legal footer */}
       <div className="legal">
         Zerodha Broking Limited: Member of
-        &nbsp;<a>NSE</a>, <a>BSE</a> - SEBI Reg. no. INZ000031633,
-        <a> CDSL</a> - SEBI Reg. no. IN-DP-431-2019 |
-        &nbsp;<a>Smart Online Dispute Resolution</a> |
-        &nbsp;<a>SEBI SCORES</a>
+  &nbsp;<span>NSE</span>, <span>BSE</span> - SEBI Reg. no. INZ000031633,
+  <span> CDSL</span> - SEBI Reg. no. IN-DP-431-2019 |
+  &nbsp;<span>Smart Online Dispute Resolution</span> |
+  &nbsp;<span>SEBI SCORES</span>
         <div className="version">v3.0.0</div>
       </div>
     </div>
