@@ -544,7 +544,7 @@ function LinkArrow({ children }) {
   return (
   <button className="blue" style={{ display: "inline-flex", alignItems: "center", gap: 8, background:'none',border:'none',padding:0,cursor:'pointer' }}>
       {children} <ArrowRight />
-    </a>
+  </button>
   );
 }
 

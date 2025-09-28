@@ -247,7 +247,7 @@ const Deposit = () => {
         <div style={foot}>
           <button style={link}>
             Click here
-          </a>{" "}
+          </button>{" "}
           to know more about other payment methods (IMPS/NEFT/RTGS).
         </div>
       </div>
