@@ -169,7 +169,7 @@ const Withdraw = () => {
                 <div>Last updated: 2025-09-24 04:51:28</div>
                 <div style={{ marginTop: 2 }}>
                   Next quarterly settlement on 2025-10-03.{" "}
-                  <a href="#" style={helpBlue}>
+                  <button style={helpBlue}>
                     Learn more
                   </a>
                   .
@@ -231,7 +231,7 @@ const Withdraw = () => {
               </div>
 
               <div style={{ marginTop: 18, display: "flex", justifyContent: "flex-end" }}>
-                <a href="#" style={{ ...helpBlue, fontSize: 14 }}>
+                <button style={{ ...helpBlue, fontSize: 14 }}>
                   View breakdown <span aria-hidden style={{ marginLeft: 6 }}>→</span>
                 </a>
               </div>

@@ -525,7 +525,7 @@ const AdminDashboard = () => {
         },
         body: JSON.stringify(updatedData),
       });
-      const result = await response.json();
+  await response.json();
       setMessage('Holdings data updated successfully!');
       fetchHoldingsDetailData(); // Refresh data
       setTimeout(() => setMessage(''), 3000);
@@ -595,7 +595,7 @@ const AdminDashboard = () => {
         },
         body: JSON.stringify(updatedData),
       });
-      const result = await response.json();
+  await response.json();
       setMessage('Positions data updated successfully!');
       fetchPositionsDetailData(); // Refresh data
       setTimeout(() => setMessage(''), 3000);

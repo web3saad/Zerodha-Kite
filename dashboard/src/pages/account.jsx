@@ -128,7 +128,7 @@ export default function Account() {
             <div className="muted" style={{ fontSize: 14 }}>Support code</div>
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
               <span style={{ letterSpacing: 2 }}>••••</span>
-              <a className="blue" href="#">View</a>
+              <button className="blue" style={{background:'none',border:'none',padding:0,cursor:'pointer'}}>View</button>
             </div>
           </div>
 
@@ -201,7 +201,7 @@ function NomineesPanel() {
       <h2 style={{ margin: "2px 0 18px", fontSize: 22, fontWeight: 400 }}>Nominees</h2>
       <p className="muted" style={{ maxWidth: 680, lineHeight: 1.6, fontSize: 14 }}>
         We will notify your nominee(s) in case your account becomes dormant due to inactivity for more than a year, and
-        you do not come back and do a reKYC. <a className="blue" href="#">Learn more</a>.
+  you do not come back and do a reKYC. <button className="blue" style={{background:'none',border:'none',padding:0,cursor:'pointer'}}>Learn more</button>.
       </p>
       <hr className="hair" />
       <div style={{ fontSize: 14, marginTop: 14 }}>
@@ -216,7 +216,7 @@ function NomineesPanel() {
         </p>
       </div>
       <div style={{ marginTop: 18 }}>
-        <a className="blue" href="#">+ Add nominee(s)</a>
+  <button className="blue" style={{background:'none',border:'none',padding:0,cursor:'pointer'}}>+ Add nominee(s)</button>
       </div>
     </>
   );
@@ -278,7 +278,7 @@ function SegmentsPanel() {
       <h2 style={{ margin: "2px 0 18px", fontSize: 22, fontWeight: 400 }}>Manage segments</h2>
       <p className="muted" style={{ maxWidth: 700, fontSize: 14, lineHeight: 1.6 }}>
         Activate or deactivate trading segments on your account. Once a segment is deactivated, it cannot be activated
-        for the next 12 hours. <a className="blue" href="#">Learn more</a>.
+  for the next 12 hours. <button className="blue" style={{background:'none',border:'none',padding:0,cursor:'pointer'}}>Learn more</button>.
       </p>
       <Tabs tabs={["Kill switch", "Activate segment"]} leftPad={0} />
       <div style={{ marginTop: 10, display: "grid", rowGap: 12, maxWidth: 520 }}>
@@ -300,10 +300,10 @@ function MTFPanel() {
     <>
       <h2 style={{ margin: "2px 0 18px", fontSize: 22, fontWeight: 400 }}>Margin Trading Facility</h2>
       <p className="muted" style={{ maxWidth: 800, fontSize: 14, lineHeight: 1.6 }}>
-        Buy stocks for delivery with lesser margins using the Margin Trading Facility. <a className="blue" href="#">Read more</a>.
+  Buy stocks for delivery with lesser margins using the Margin Trading Facility. <button className="blue" style={{background:'none',border:'none',padding:0,cursor:'pointer'}}>Read more</button>.
       </p>
       <div style={{ marginTop: 12 }}>
-        <a className="blue" href="#">Terms and conditions</a>
+  <button className="blue" style={{background:'none',border:'none',padding:0,cursor:'pointer'}}>Terms and conditions</button>
       </div>
       <div style={{ marginTop: 18 }}>
         <button className="btn">Enable MTF</button>
@@ -381,14 +381,14 @@ function FamilyPanel() {
     <>
       <h2 style={{ margin: "2px 0 18px", fontSize: 22, fontWeight: 400 }}>Family</h2>
       <p className="muted" style={{ maxWidth: 760, fontSize: 14, lineHeight: 1.6 }}>
-        Link your family's Zerodha accounts as sub-accounts to view combined portfolios. <a className="blue" href="#">Learn more</a>.
+  Link your family's Zerodha accounts as sub-accounts to view combined portfolios. <button className="blue" style={{background:'none',border:'none',padding:0,cursor:'pointer'}}>Learn more</button>.
       </p>
       <div style={{ marginTop: 14 }}>
         <button className="btn">Link a sub-account</button>
       </div>
       <div style={{ marginTop: 12 }}>
         <p className="muted" style={{ margin: 0, fontSize: 14 }}>
-          Family accounts not with Zerodha? <br />Transfer them to Zerodha to link them. <a className="blue" href="#">Learn more</a>.
+          Family accounts not with Zerodha? <br />Transfer them to Zerodha to link them. <button className="blue" style={{background:'none',border:'none',padding:0,cursor:'pointer'}}>Learn more</button>.
         </p>
       </div>
     </>
@@ -407,7 +407,7 @@ function VerifiedPLPanel({ accountData }) {
     <>
       <h2 style={{ margin: "2px 0 18px", fontSize: 22, fontWeight: 400 }}>Verified P&L</h2>
       <p className="muted" style={{ maxWidth: 780, fontSize: 14, lineHeight: 1.6 }}>
-        Share your P&L and trades publicly, verified by Zerodha. <a className="blue" href="#">Read more</a>.
+  Share your P&L and trades publicly, verified by Zerodha. <button className="blue" style={{background:'none',border:'none',padding:0,cursor:'pointer'}}>Read more</button>.
       </p>
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", columnGap: 40, alignItems: "start" }}>
@@ -542,7 +542,7 @@ function KVRow({ k, v, s }) {
 
 function LinkArrow({ children }) {
   return (
-    <a className="blue" href="#" style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+  <button className="blue" style={{ display: "inline-flex", alignItems: "center", gap: 8, background:'none',border:'none',padding:0,cursor:'pointer' }}>
       {children} <ArrowRight />
     </a>
   );

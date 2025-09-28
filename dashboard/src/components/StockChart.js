@@ -157,7 +157,7 @@ const StockChart = ({ symbol: initialSymbol }) => {
       <div style={topTabs}>
         <div style={tabActive}>Chart</div>
         <a
-          href="#"
+          // href="#"
           style={{ ...tab, textDecoration: "none", cursor: "pointer" }}
           onClick={e => {
             e.preventDefault();

@@ -10,7 +10,7 @@ const BuyActionWindow = ({ stock, orderType, onClose, onSubmit }) => {
   const [isIntraday, setIsIntraday] = useState(false);
   const [stockPrice, setStockPrice] = useState(null);
   const [loading, setLoading] = useState(true);
-  const { user } = useAuth();
+  // const { user } = useAuth();
 
   useEffect(() => {
     if (stock) {
