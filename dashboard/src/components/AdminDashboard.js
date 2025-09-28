@@ -525,7 +525,7 @@ const AdminDashboard = () => {
         },
         body: JSON.stringify(updatedData),
       });
-  await response.json();
+      const result = await response.json();
       setMessage('Holdings data updated successfully!');
       fetchHoldingsDetailData(); // Refresh data
       setTimeout(() => setMessage(''), 3000);
@@ -553,7 +553,7 @@ const AdminDashboard = () => {
   const handleHoldingItemChange = (index, field, value) => {
     setHoldingsDetailData(prev => ({
       ...prev,
-      holdings: (prev?.holdings || []).map((item, i) =>
+      holdings: prev.holdings.map((item, i) => 
         i === index ? { ...item, [field]: value } : item
       )
     }));
@@ -562,7 +562,7 @@ const AdminDashboard = () => {
   const addHoldingItem = () => {
     setHoldingsDetailData(prev => ({
       ...prev,
-      holdings: [...(prev?.holdings || []), {
+      holdings: [...prev.holdings, {
         instrument: '',
         qty: 0,
         avgCost: '',
@@ -572,15 +572,15 @@ const AdminDashboard = () => {
         netChg: '',
         dayChg: ''
       }],
-      count: (prev?.holdings?.length || 0) + 1
+      count: prev.holdings.length + 1
     }));
   };
 
   const removeHoldingItem = (index) => {
     setHoldingsDetailData(prev => ({
       ...prev,
-      holdings: (prev?.holdings || []).filter((_, i) => i !== index),
-      count: (prev?.holdings?.length || 0) - 1
+      holdings: prev.holdings.filter((_, i) => i !== index),
+      count: prev.holdings.length - 1
     }));
   };
 
@@ -595,7 +595,7 @@ const AdminDashboard = () => {
         },
         body: JSON.stringify(updatedData),
       });
-  await response.json();
+      const result = await response.json();
       setMessage('Positions data updated successfully!');
       fetchPositionsDetailData(); // Refresh data
       setTimeout(() => setMessage(''), 3000);
@@ -768,6 +768,17 @@ const AdminDashboard = () => {
           <h1 style={styles.title}>📊 Admin Dashboard</h1>
           <p style={styles.subtitle}>Manage your Zerodha Clone dashboard data</p>
         </div>
+        
+        {/* Preview Button */}
+        <button
+          style={styles.previewButton}
+          onClick={() => window.open('http://localhost:3001', '_blank')}
+          title="Preview Dashboard"
+        >
+          <span style={styles.previewIcon}>👁️</span>
+          <span>Preview</span>
+        </button>
+
         {message && (
           <div style={{
             ...styles.message,
@@ -2897,6 +2908,27 @@ const styles = {
       display: 'none',
     },
   },
+  previewButton: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.5rem',
+    padding: '0.75rem 1.5rem',
+    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '2rem',
+    fontSize: '1rem',
+    fontWeight: '600',
+    cursor: 'pointer',
+    boxShadow: '0 4px 12px rgba(102, 126, 234, 0.3)',
+    transition: 'all 0.2s ease',
+    textDecoration: 'none',
+    marginRight: '1rem',
+  },
+  previewIcon: {
+    fontSize: '1.2rem',
+    filter: 'brightness(1.1)',
+  },
   loadingContainer: {
     display: 'flex',
     flexDirection: 'column',
@@ -3425,6 +3457,18 @@ html, body, .admin-dashboard {
   .admin-dashboard .layoutGrid {
     grid-template-columns: 220px 1fr !important;
   }
+}
+
+/* Preview Button Hover Effects */
+.admin-dashboard button[style*="linear-gradient"]:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4) !important;
+  background: linear-gradient(135deg, #5a6fd8 0%, #6b46a3 100%) !important;
+}
+
+.admin-dashboard button[style*="linear-gradient"]:active {
+  transform: translateY(0) !important;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3) !important;
 }
 
 /* Buttons on white */

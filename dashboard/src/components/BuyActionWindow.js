@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import './BuyActionWindow.css';
-// import { useAuth } from "../hooks/useAuth";
 
 const BuyActionWindow = ({ stock, orderType, onClose, onSubmit }) => {
   const [selectedExchange, setSelectedExchange] = useState('BSE');
@@ -10,7 +9,6 @@ const BuyActionWindow = ({ stock, orderType, onClose, onSubmit }) => {
   const [isIntraday, setIsIntraday] = useState(false);
   const [stockPrice, setStockPrice] = useState(null);
   const [loading, setLoading] = useState(true);
-  // const { user } = useAuth();
 
   useEffect(() => {
     if (stock) {

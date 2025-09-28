@@ -1,6 +1,6 @@
-# 🌐 Zerodha Clone
+# 🌐 Zerodha Clone - Admin Dashboard
 
-Welcome to **Zerodha Clone**! This repository includes a clone of the popular stock trading platform, built using the MERN stack.
+Welcome to **Zerodha Clone Admin Dashboard**! This is a modern, responsive admin dashboard for managing trading platform data, built with React.js and Node.js.
 
 ---
 
@@ -8,46 +8,46 @@ Welcome to **Zerodha Clone**! This repository includes a clone of the popular st
 
 1. [Overview](#-overview)
 2. [Technologies](#-technologies)
-3. [Packages & Libraries Used](#-packages--libraries-used)
+3. [Project Structure](#-project-structure)
 4. [Getting Started](#-getting-started)
-5. [Setup](#-setup)
-6. [Features](#-features)
-7. [Demo & Screenshots](#-demo--screenshots)
-8. [Acknowledgments](#-acknowledgments)
-9. [License](#-license)
+5. [Features](#-features)
+6. [API Endpoints](#-api-endpoints)
+7. [License](#-license)
 
 ---
 
 ## 🌟 Overview
 
-**Description**: A clone of the popular stock trading platform, Zerodha, built using the MERN stack.
+A modern admin dashboard for managing trading platform data including equity, commodity, holdings, positions, funds, orders, accounts, and portfolio information. Features a responsive design with sidebar navigation and real-time data editing capabilities.
+
+---
+
+## 📁 Project Structure
+
+```
+zerodha-clone/
+├── backend/          # Node.js + Express API server
+│   ├── index.js      # Main server file
+│   ├── controller/   # API controllers
+│   ├── model/        # Database models
+│   ├── routes/       # API routes
+│   └── schemas/      # Mongoose schemas
+├── dashboard/        # React.js admin dashboard
+│   └── src/
+│       └── components/  # React components
+└── package.json      # Root dependencies
+```
 
 ---
 
 ## 💻 Technologies
 
-Below is a breakdown of the core technologies used in this project.
-
-| 🌐 Web       |
-| ------------ |
-| **React.js** |
-| **Node.js**  |
-| **MongoDB**  |
-
----
-
-## 📦 Packages / Libraries Used
-
-This project uses the following essential libraries and packages:
-
-| Package / Library  | Purpose                       |
-| ------------------ | ----------------------------- |
-| `Bootstrap 5.3`    | Responsive design             |
-| `Material UI`      | UI Components                 |
-| `Express.js`       | Backend framework             |
-| `Mongoose`         | MongoDB object modeling       |
-| `Bcrypt`           | Password hashing              |
-| `Jwt`              | JSON Web Token                |
+| Frontend         | Backend         | Database   |
+| ---------------- | --------------- | ---------- |
+| **React.js**     | **Node.js**     | **MongoDB** |
+| **Material UI**  | **Express.js**  | **Mongoose** |
+| **Chart.js**     | **JWT**         |            |
+| **Axios**        | **Bcrypt**      |            |
 | `Charts.js`        | Data visualization            |
 | `Axios`            | HTTP client                   |
 | `React Router Dom` | Client-side routing           |

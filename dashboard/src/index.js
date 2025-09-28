@@ -4,10 +4,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./index.css";
 
 import Home from "./components/Home";
-import Register from "./components/Register";
-import Login from "./components/Login";
-import { ProtectedRoute } from "./components/ProtectedRoute";
-import { AuthProvider } from "./hooks/useAuth";
 import Console from "./pages/console";
 import Withdraw from "./pages/withdraw";
 import Deposit from "./pages/deposit";
@@ -18,53 +14,14 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <AuthProvider>
-        <Routes>
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/admin" element={<AdminDashboard />} />
-          <Route
-            path="/console"
-            element={
-              <ProtectedRoute>
-                <Console />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/withdraw"
-            element={
-              <ProtectedRoute>
-                <Withdraw />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/deposit"
-            element={
-              <ProtectedRoute>
-                <Deposit />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/ipo"
-            element={
-              <ProtectedRoute>
-                <IPOApply />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/*"
-            element={
-              <ProtectedRoute>
-                <Home />
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
-      </AuthProvider>
+      <Routes>
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/console" element={<Console />} />
+        <Route path="/withdraw" element={<Withdraw />} />
+        <Route path="/deposit" element={<Deposit />} />
+        <Route path="/ipo" element={<IPOApply />} />
+        <Route path="/*" element={<Home />} />
+      </Routes>
     </BrowserRouter>
   </React.StrictMode>
 );

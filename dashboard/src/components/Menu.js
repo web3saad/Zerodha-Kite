@@ -1,6 +1,5 @@
 import React, { useState, useMemo, useCallback, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
 
 const Menu = React.memo(() => {
   const [selectedMenu, SetSelectedMenu] = useState(0);
@@ -10,7 +9,6 @@ const Menu = React.memo(() => {
     { name: "NIFTY 50", last: "24658.84", change: "-232.01", pct: "(-0.93%)", isPositive: false },
     { name: "SENSEX", last: "80426.01", change: "-733.67", pct: "(-0.90%)", isPositive: false },
   ]);
-  const { logout } = useAuth();
 
   const handleMenuClick = useCallback((index) => SetSelectedMenu(index), []);
   const handleProfileClick = useCallback(
@@ -214,7 +212,7 @@ const Menu = React.memo(() => {
     []
   );
 
-  // const logoStyle = useMemo(() => ({ width: 28, height: "auto" }), []);
+  const logoStyle = useMemo(() => ({ width: 28, height: "auto" }), []);
   const linkStyle = useMemo(() => ({ textDecoration: "none" }), []);
   const profileStyle = useMemo(
     () => ({ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }),
@@ -290,7 +288,18 @@ const Menu = React.memo(() => {
     () => ({ height: 1, background: "#f1f3f5", margin: 0 }),
     []
   );
-  // const smallIcon = useMemo(() => ({ width: 16, height: 16, display: "inline-flex", alignItems: "center", justifyContent: "center", color: "#6f7680", flex: "0 0 auto" }), []);
+  const smallIcon = useMemo(
+    () => ({
+      width: 16,
+      height: 16,
+      display: "inline-flex",
+      alignItems: "center",
+      justifyContent: "center",
+      color: "#6f7680",
+      flex: "0 0 auto",
+    }),
+    []
+  );
   const toggleWrap = useMemo(
     () => ({ display: "inline-flex", alignItems: "center", gap: 8 }),
     []
@@ -506,7 +515,7 @@ const Menu = React.memo(() => {
               <hr style={ddDivider} />
 
               <li>
-                <div style={ddItem} onClick={logout}>
+                <div style={ddItem} onClick={() => console.log('Logout')}>
                   
                   <span>Logout</span>
                 </div>
