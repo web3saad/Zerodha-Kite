@@ -23,7 +23,11 @@ const accountRoute = require("./routes/accountRoute");
 const consoleRoute = require("./routes/consoleRoute");
 const portfolioRoute = require("./routes/portfolioRoute");
 
-app.use(cors());
+// Configure CORS to allow your Vercel frontend
+app.use(cors({
+  origin: ['https://zerodha-kite-zeta.vercel.app', 'http://localhost:3000'],
+  credentials: true
+}));
 app.use(bodyParser.json());
 
 app.use("/holdings", holdingsRoute);
@@ -43,6 +47,6 @@ app.use("/api/console", consoleRoute);
 app.use("/api/portfolio", portfolioRoute);
 
 app.listen(port, async () => {
-  // console.log(`App Is listening On ${port}`);
-  await mongoose.connect(url);
+  console.log(`App Is listening On ${port}`);
+  await mongoose.connect(url).then(() => console.log("Connected To DB"));
 });
