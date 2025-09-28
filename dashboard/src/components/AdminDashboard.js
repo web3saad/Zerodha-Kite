@@ -2826,6 +2826,8 @@ const styles = {
     position: 'relative',
     transition: 'transform 0.3s ease',
     zIndex: 20,
+    overflowY: 'auto',
+    overflowX: 'hidden',
     '@media (max-width: 900px)': {
       position: 'fixed',
       left: 0,
@@ -2835,6 +2837,9 @@ const styles = {
       boxShadow: '2px 0 8px rgba(0,0,0,0.08)',
       backgroundColor: '#fff',
       maxWidth: '80vw',
+      overflowY: 'auto',
+      overflowX: 'hidden',
+      WebkitOverflowScrolling: 'touch',
     },
   },
   sidebarOpen: {
