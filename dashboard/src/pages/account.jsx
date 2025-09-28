@@ -12,7 +12,7 @@ export default function Account() {
   useEffect(() => {
     const fetchAccountData = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:3000'}/api/account`);
+        const response = await axios.get(`${process.env.REACT_APP_API_URL || 'https://zerodha-kite-890j.onrender.com'}/api/account`);
         setAccountData(response.data);
       } catch (error) {
         console.error('Error fetching account data:', error);

@@ -282,7 +282,7 @@ export default function PnLConsole() {
   useEffect(() => {
     const fetchConsoleData = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:3000'}/api/console`);
+        const response = await fetch(`${process.env.REACT_APP_API_URL || 'https://zerodha-kite-890j.onrender.com'}/api/console`);
         const apiData = await response.json();
         setConsoleApiData(apiData);
       } catch (error) {

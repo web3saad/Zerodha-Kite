@@ -47,7 +47,7 @@ function WatchListAction({ uid, symbol = "HDFCBANK", bse = "â‚¹945.15", nse = "â
 
       // Only add to positions if it's a BUY order
       if (side === 'buy') {
-        const response = await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:3000'}/positions/add`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL || 'https://zerodha-kite-890j.onrender.com'}/positions/add`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

@@ -9,7 +9,7 @@ export default function Dashboard() {
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const API_BASE = process.env.REACT_APP_API_URL || 'http://localhost:3000';
+  const API_BASE = process.env.REACT_APP_API_URL || 'https://zerodha-kite-890j.onrender.com';
 
   useEffect(() => {
     fetchDashboardData();

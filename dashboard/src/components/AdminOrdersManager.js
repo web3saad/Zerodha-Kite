@@ -83,7 +83,7 @@ const AdminOrdersManager = () => {
       try {
         setLoading(true);
         const token = localStorage.getItem('token');
-        const response = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:3000'}/api/admin/orders`, {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL || 'https://zerodha-kite-890j.onrender.com'}/api/admin/orders`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         
@@ -148,7 +148,7 @@ const AdminOrdersManager = () => {
         const orderId = order._id || order.id;
         
         await axios.delete(
-          `${process.env.REACT_APP_API_URL || 'http://localhost:3000'}/api/admin/orders/${orderId}`,
+          `${process.env.REACT_APP_API_URL || 'https://zerodha-kite-890j.onrender.com'}/api/admin/orders/${orderId}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         
@@ -172,7 +172,7 @@ const AdminOrdersManager = () => {
       if (editingOrder) {
         // Update existing order
         const response = await axios.put(
-          `${process.env.REACT_APP_API_URL || 'http://localhost:3000'}/api/admin/orders/${editingOrder._id || editingOrder.id}`,
+          `${process.env.REACT_APP_API_URL || 'https://zerodha-kite-890j.onrender.com'}/api/admin/orders/${editingOrder._id || editingOrder.id}`,
           formData,
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -187,7 +187,7 @@ const AdminOrdersManager = () => {
       } else {
         // Add new order
         const response = await axios.post(
-          `${process.env.REACT_APP_API_URL || 'http://localhost:3000'}/api/admin/orders`,
+          `${process.env.REACT_APP_API_URL || 'https://zerodha-kite-890j.onrender.com'}/api/admin/orders`,
           formData,
           { headers: { Authorization: `Bearer ${token}` } }
         );

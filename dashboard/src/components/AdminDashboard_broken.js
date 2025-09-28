@@ -10,7 +10,7 @@ const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('equity');
   const [message, setMessage] = useState('');
 
-  const API_BASE = 'http://localhost:3000';
+  const API_BASE = 'https://zerodha-kite-890j.onrender.com';
 
   useEffect(() => {
     fetchDashboardData();

@@ -19,8 +19,8 @@ const Menu = React.memo(() => {
   const fetchMarketData = useCallback(async () => {
     try {
       const promises = [
-        fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:3000'}/api/stocks/stock/^NSEI`).catch(() => null),
-        fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:3000'}/api/stocks/stock/^BSESN`).catch(() => null),
+        fetch(`${process.env.REACT_APP_API_URL || 'https://zerodha-kite-890j.onrender.com'}/api/stocks/stock/^NSEI`).catch(() => null),
+        fetch(`${process.env.REACT_APP_API_URL || 'https://zerodha-kite-890j.onrender.com'}/api/stocks/stock/^BSESN`).catch(() => null),
       ];
 
       const [niftyResponse, sensexResponse] = await Promise.all(promises);

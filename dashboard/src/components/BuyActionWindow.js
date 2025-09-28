@@ -26,7 +26,7 @@ const BuyActionWindow = ({ stock, orderType, onClose, onSubmit }) => {
       // If no price in stock object, try to fetch from API
       const fetchStockPrice = async () => {
         try {
-          const response = await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:3000'}/api/stocks/stock/${stock.symbol || stock.name}`);
+          const response = await fetch(`${process.env.REACT_APP_API_URL || 'https://zerodha-kite-890j.onrender.com'}/api/stocks/stock/${stock.symbol || stock.name}`);
           const data = await response.json();
           
           if (data.chart?.result?.[0]) {

@@ -9,7 +9,7 @@ export default function Holdings() {
   const font =
     "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif";
 
-  const API_BASE = process.env.REACT_APP_API_URL || 'http://localhost:3000';
+  const API_BASE = process.env.REACT_APP_API_URL || 'https://zerodha-kite-890j.onrender.com';
 
   useEffect(() => {
     fetchHoldingsData();

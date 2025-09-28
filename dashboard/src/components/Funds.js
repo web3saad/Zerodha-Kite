@@ -14,7 +14,7 @@ export default function Funds() {
 
   const fetchFundsData = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:3000'}/api/funds`);
+      const response = await fetch(`${process.env.REACT_APP_API_URL || 'https://zerodha-kite-890j.onrender.com'}/api/funds`);
       const data = await response.json();
       setFundsData(data);
     } catch (error) {
