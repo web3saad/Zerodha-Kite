@@ -772,7 +772,7 @@ const AdminDashboard = () => {
         {/* Preview Button */}
         <button
           style={styles.previewButton}
-          onClick={() => window.open('http://localhost:3001', '_blank')}
+          onClick={() => window.open('https://zerodha-kite-zeta.vercel.app/', '_blank')}
           title="Preview Dashboard"
         >
           <span style={styles.previewIcon}>👁️</span>
