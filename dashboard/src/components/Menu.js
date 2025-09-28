@@ -214,7 +214,7 @@ const Menu = React.memo(() => {
     []
   );
 
-  // const logoStyle = useMemo(() => ({ width: 28, height: "auto" }), []);
+  const logoStyle = useMemo(() => ({ width: 28, height: "auto" }), []);
   const linkStyle = useMemo(() => ({ textDecoration: "none" }), []);
   const profileStyle = useMemo(
     () => ({ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }),
@@ -290,7 +290,7 @@ const Menu = React.memo(() => {
     () => ({ height: 1, background: "#f1f3f5", margin: 0 }),
     []
   );
-  // const smallIcon = useMemo(
+  const smallIcon = useMemo(
     () => ({
       width: 16,
       height: 16,
