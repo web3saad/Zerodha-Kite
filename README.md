@@ -1,6 +1,6 @@
 # 🌐 Zerodha Clone - Admin Dashboard
 
-Welcome to **Zerodha Clone Admin Dashboard**! This is a modern, responsive admin dashboard for managing trading platform data, built with React.js and Node.js.
+Welcome to **Zerodha Clone Admin Dashboard**! This is a modern, responsive admin dashboard for managing trading platform data, built with React.js and Node.js...
 
 ---
 
