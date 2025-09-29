@@ -14,7 +14,7 @@ function WacthListItem({ stock }) {
     <li onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseExit}>
       <div className="item">
         <div className="stock-name-section">
-          <p className="stock-name">{stock.name}</p>
+          <p className={`stock-name ${stock.isDown ? "down" : "up"}`}>{stock.name}</p>
           {stock.exchange && <span className="exchange">{stock.exchange}</span>}
         </div>
         <div className="item-info">
