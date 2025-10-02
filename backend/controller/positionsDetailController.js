@@ -3,14 +3,18 @@ const { PositionsDetailModel } = require("../model/PositionsDetailModel");
 // Get positions data
 const getPositionsData = async (req, res) => {
   try {
+    console.log('Getting positions data...');
     let positionsData = await PositionsDetailModel.findOne();
     
     if (!positionsData) {
+      console.log('No positions data found, creating default...');
       // Create default positions data if none exists
       positionsData = new PositionsDetailModel({});
       await positionsData.save();
+      console.log('Default positions data created');
     }
     
+    console.log('Returning positions data:', positionsData.count);
     res.json(positionsData);
   } catch (error) {
     console.error('Error fetching positions data:', error);

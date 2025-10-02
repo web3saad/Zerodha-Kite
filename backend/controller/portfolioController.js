@@ -2,10 +2,14 @@ const PortfolioModel = require("../model/PortfolioModel");
 
 const getPortfolioData = async (req, res) => {
   try {
+    console.log('Portfolio API endpoint called');
+    console.log('Attempting to fetch portfolio data...');
     
     let portfolioData = await PortfolioModel.findOne();
+    console.log('Portfolio data found:', !!portfolioData);
     
     if (!portfolioData) {
+      console.log('No portfolio data found, creating default...');
       // Create default portfolio data if none exists
       portfolioData = new PortfolioModel({
         metrics: {
@@ -45,8 +49,10 @@ const getPortfolioData = async (req, res) => {
       });
       
       await portfolioData.save();
+      console.log('Default portfolio data created');
     }
     
+    console.log('Sending portfolio data response');
     res.status(200).json(portfolioData);
   } catch (error) {
     console.error('Error in getPortfolioData:', error);

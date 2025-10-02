@@ -9,6 +9,7 @@ module.exports.addPosition = async (req, res) => {
   try {
     const { stock, orderType, quantity, price, exchange } = req.body;
     
+    console.log('Adding new position:', req.body);
     
     // Get current positions data or create new if none exists
     let positionsData = await PositionsModel.findOne();

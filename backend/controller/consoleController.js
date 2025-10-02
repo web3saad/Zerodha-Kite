@@ -53,6 +53,7 @@ const getConsoleData = async (req, res) => {
 const updateConsoleData = async (req, res) => {
   try {
     const updateData = req.body;
+    console.log("Received update data:", JSON.stringify(updateData, null, 2));
     
     updateData.lastUpdated = new Date();
     
