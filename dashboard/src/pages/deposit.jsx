@@ -209,7 +209,7 @@ const Deposit = () => {
               <option value="icici">ICICI BANK - XXX 1023</option>
             </select>
             <div style={subnote}>
-              Add another bank account from <button style={link}>Console</button>.
+              Add another bank account from <a href="#" style={link}>Console</a>.
             </div>
           </div>
 
@@ -245,9 +245,9 @@ const Deposit = () => {
         </div>
 
         <div style={foot}>
-          <button style={link}>
+          <a href="#" style={link}>
             Click here
-          </button>{" "}
+          </a>{" "}
           to know more about other payment methods (IMPS/NEFT/RTGS).
         </div>
       </div>

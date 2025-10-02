@@ -19,7 +19,7 @@ const OptionChain = () => {
     gap: 16,
   };
 
-  // const scrip = { fontSize: 18, fontWeight: 700, letterSpacing: 0.2 };
+  const scrip = { fontSize: 18, fontWeight: 700, letterSpacing: 0.2 };
   const price = { fontSize: 14, marginLeft: 6, color: "#111" };
   const change = { fontSize: 12, marginLeft: 6, color: "#e53e3e" };
 

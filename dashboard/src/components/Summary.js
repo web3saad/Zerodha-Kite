@@ -9,7 +9,7 @@ export default function Dashboard() {
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const API_BASE = process.env.REACT_APP_API_URL || 'https://zerodha-kite-890j.onrender.com';
+  const API_BASE = 'http://localhost:3000';
 
   useEffect(() => {
     fetchDashboardData();
@@ -220,10 +220,10 @@ const Block = ({ color, w }) => (
 );
 
 function ClockIcon(){
-  return (<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9aa1a8" strokeWidth="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v6l4 2"/></svg>);
+  return (<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9aa1a8" strokeWidth="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>);
 }
 function DropIcon(){
-  return (<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9aa1a8" strokeWidth="1.8"><path d="M12 3C12 3 6 9 6 13a6 6 0 1 0 12 0c0-4-6-10-6-10z"/></svg>);
+  return (<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9aa1a8" strokeWidth="1.8"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>);
 }
 function BagIcon(){
   return (<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9aa1a8" strokeWidth="1.8"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7a4 4 0 0 1 8 0"/></svg>);

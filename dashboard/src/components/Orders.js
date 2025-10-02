@@ -86,7 +86,7 @@ function OrdersView(){
     ];
     
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL || 'https://zerodha-kite-890j.onrender.com'}/api/admin/orders-page`);
+      const response = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:3000'}/api/admin/orders-page`);
       if (response.data) {
         setOpenRows(response.data.openOrders || defaultOpenRows);
         setExecRows(response.data.executedOrders || defaultExecRows);

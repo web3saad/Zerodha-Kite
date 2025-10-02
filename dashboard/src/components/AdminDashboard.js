@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_BASE_URL } from '../utils/api';
 
 const AdminDashboard = () => {
   const [dashboardData, setDashboardData] = useState(null);
@@ -14,7 +15,7 @@ const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('equity');
   const [message, setMessage] = useState('');
 
-  const API_BASE = process.env.REACT_APP_API_URL || 'https://zerodha-kite-890j.onrender.com';
+  const API_BASE = API_BASE_URL;
 
   useEffect(() => {
     fetchDashboardData();
