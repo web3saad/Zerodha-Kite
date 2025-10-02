@@ -179,7 +179,7 @@ const WatchList = () => {
       setLoading(true);
       const promises = stockSymbols.map(async (stock) => {
         try {
-          const response = await fetch(`http://localhost:3000/api/stocks/stock/${stock.symbol}`);
+          const response = await fetch(`https://zerodha-kite-890j.onrender.com/api/stocks/stock/${stock.symbol}`);
           const data = await response.json();
           
           if (data.chart?.result?.[0]) {
@@ -273,9 +273,9 @@ const WatchList = () => {
     console.log('Order submitted:', orderData);
     
     try {
-      // Only add to positions if it's a BUY order
       if (orderData.orderType === 'BUY') {
-        const response = await fetch(`http://localhost:3000/positions/add`, {
+        // Add to positions for BUY orders
+        const response = await fetch(`https://zerodha-kite-890j.onrender.com/positions/add`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -297,13 +297,38 @@ const WatchList = () => {
           console.error('Failed to add position');
           alert(`${orderData.orderType} order placed successfully!\n\nStock: ${orderData.stock.name}\nQuantity: ${orderData.quantity}\nPrice: ₹${orderData.price.toFixed(2)}\nTotal: ₹${orderData.total}\n\nNote: Failed to add to positions.`);
         }
-      } else {
-        // For SELL orders, just show success message
-        alert(`${orderData.orderType} order placed successfully!\n\nStock: ${orderData.stock.name}\nQuantity: ${orderData.quantity}\nPrice: ₹${orderData.price.toFixed(2)}\nTotal: ₹${orderData.total}`);
+      } else if (orderData.orderType === 'SELL') {
+        // Handle SELL orders - reduce or remove from positions
+        const response = await fetch(`https://zerodha-kite-890j.onrender.com/positions/sell`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            stock: orderData.stock,
+            orderType: orderData.orderType,
+            quantity: orderData.quantity,
+            price: orderData.price,
+            exchange: orderData.exchange
+          }),
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          console.log('Position updated/sold successfully:', result);
+          if (result.message.includes('removed')) {
+            alert(`${orderData.orderType} order placed successfully!\n\nStock: ${orderData.stock.name}\nQuantity: ${orderData.quantity}\nPrice: ₹${orderData.price.toFixed(2)}\nTotal: ₹${orderData.total}\n\nPosition completely sold and removed from portfolio!`);
+          } else {
+            alert(`${orderData.orderType} order placed successfully!\n\nStock: ${orderData.stock.name}\nQuantity: ${orderData.quantity}\nPrice: ₹${orderData.price.toFixed(2)}\nTotal: ₹${orderData.total}\n\nPosition updated in your portfolio!`);
+          }
+        } else {
+          const errorData = await response.json();
+          alert(`Error: ${errorData.error || 'Failed to process sell order'}`);
+        }
       }
     } catch (error) {
       console.error('Error submitting order:', error);
-      alert(`${orderData.orderType} order placed successfully!\n\nStock: ${orderData.stock.name}\nQuantity: ${orderData.quantity}\nPrice: ₹${orderData.price.toFixed(2)}\nTotal: ₹${orderData.total}\n\nNote: Error adding to positions.`);
+      alert(`${orderData.orderType} order placed successfully!\n\nStock: ${orderData.stock.name}\nQuantity: ${orderData.quantity}\nPrice: ₹${orderData.price.toFixed(2)}\nTotal: ₹${orderData.total}\n\nNote: Error processing order.`);
     }
     
     setShowBuyModal(false);
@@ -326,7 +351,7 @@ const WatchList = () => {
   const addToWatchlist = async (stock) => {
     try {
       // Fetch real data for the stock
-      const response = await fetch(`http://localhost:3000/api/stocks/stock/${stock.symbol}`);
+      const response = await fetch(`https://zerodha-kite-890j.onrender.com/api/stocks/stock/${stock.symbol}`);
       const data = await response.json();
       
       let newStock;

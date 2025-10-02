@@ -46,7 +46,7 @@ const OrdersPageManager = () => {
       // Try to load from backend, fallback to default data
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:3000'}/api/admin/orders-page`, {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL || 'https://zerodha-kite-890j.onrender.com'}/api/admin/orders-page`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         
@@ -124,7 +124,7 @@ const OrdersPageManager = () => {
         
         // Try to save to backend
         try {
-          await axios.put(`${process.env.REACT_APP_API_URL || 'http://localhost:3000'}/api/admin/orders-page`, {
+          await axios.put(`${process.env.REACT_APP_API_URL || 'https://zerodha-kite-890j.onrender.com'}/api/admin/orders-page`, {
             openOrders: orderType === 'open' ? 
               openOrders.map(o => o.id === editingOrder.id ? { ...formData, id: editingOrder.id } : o) : 
               openOrders,
@@ -150,7 +150,7 @@ const OrdersPageManager = () => {
           
           // Try to save to backend
           try {
-            await axios.put(`${process.env.REACT_APP_API_URL || 'http://localhost:3000'}/api/admin/orders-page`, {
+            await axios.put(`${process.env.REACT_APP_API_URL || 'https://zerodha-kite-890j.onrender.com'}/api/admin/orders-page`, {
               openOrders: newOpenOrders,
               executedOrders
             }, { headers: { Authorization: `Bearer ${token}` } });
@@ -163,7 +163,7 @@ const OrdersPageManager = () => {
           
           // Try to save to backend
           try {
-            await axios.put(`${process.env.REACT_APP_API_URL || 'http://localhost:3000'}/api/admin/orders-page`, {
+            await axios.put(`${process.env.REACT_APP_API_URL || 'https://zerodha-kite-890j.onrender.com'}/api/admin/orders-page`, {
               openOrders,
               executedOrders: newExecutedOrders
             }, { headers: { Authorization: `Bearer ${token}` } });
