@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 
 const AccountSchema = new mongoose.Schema({
   personal: {
+    name: {
+      type: String,
+      default: "Mohammad Sayad"
+    },
     email: {
       type: String,
       default: "SAHADSAAD186@GMAIL.COM"

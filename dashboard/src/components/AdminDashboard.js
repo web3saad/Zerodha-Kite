@@ -1524,6 +1524,15 @@ const AdminDashboard = () => {
                   <h3 style={styles.subTitle}>📋 Personal Information</h3>
                   <div style={styles.formGrid}>
                     <div style={styles.inputGroup}>
+                      <label style={styles.label}>Full Name</label>
+                      <input
+                        style={styles.input}
+                        value={accountData.personal?.name || ''}
+                        onChange={(e) => handleAccountChange('personal', 'name', e.target.value)}
+                        placeholder="e.g., Mohammad Sayad"
+                      />
+                    </div>
+                    <div style={styles.inputGroup}>
                       <label style={styles.label}>Email</label>
                       <input
                         style={styles.input}

@@ -49,15 +49,26 @@ module.exports.login = async (req, res) => {
 
 module.exports.getUserProfile = async (req, res) => {
   try {
-    // For now, return a default user profile since we don't have authentication middleware
-    // In a real app, you'd decode the JWT token to get the user ID
-    const defaultUser = {
-      username: "Mohammad Sayad",
-      email: "sahadsaad186@gmail.com"
+    // Import Account model to get user profile data
+    const Account = require("../model/AccountModel");
+    
+    // Fetch account data to get user profile information
+    let accountData = await Account.findOne();
+    
+    if (!accountData) {
+      // Create default data if it doesn't exist
+      accountData = new Account();
+      await accountData.save();
+    }
+    
+    const userProfile = {
+      username: accountData.personal?.name || "Mohammad Sayad",
+      email: accountData.personal?.email || "sahadsaad186@gmail.com"
     };
     
-    res.status(200).json(defaultUser);
+    res.status(200).json(userProfile);
   } catch (error) {
+    console.error('Error fetching user profile:', error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
