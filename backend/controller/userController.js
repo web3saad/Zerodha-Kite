@@ -46,3 +46,18 @@ module.exports.login = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+module.exports.getUserProfile = async (req, res) => {
+  try {
+    // For now, return a default user profile since we don't have authentication middleware
+    // In a real app, you'd decode the JWT token to get the user ID
+    const defaultUser = {
+      username: "Mohammad Sayad",
+      email: "sahadsaad186@gmail.com"
+    };
+    
+    res.status(200).json(defaultUser);
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+};

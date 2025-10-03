@@ -1,10 +1,15 @@
 import React, { useState, useMemo, useCallback, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { API_BASE_URL } from '../utils/api';
 
 const Menu = React.memo(() => {
   const [selectedMenu, SetSelectedMenu] = useState(0);
   const [isProfileDropdownOpen, SetIsProfileDropdownOpen] = useState(false);
   const [privacyOn, setPrivacyOn] = useState(true);
+  const [userProfile, setUserProfile] = useState({
+    username: "Loading...",
+    email: "loading@example.com"
+  });
   const [marketData, setMarketData] = useState([
     { name: "NIFTY 50", last: "24658.84", change: "-232.01", pct: "(-0.93%)", isPositive: false },
     { name: "SENSEX", last: "80426.01", change: "-733.67", pct: "(-0.90%)", isPositive: false },
@@ -15,6 +20,19 @@ const Menu = React.memo(() => {
     () => SetIsProfileDropdownOpen(!isProfileDropdownOpen),
     [isProfileDropdownOpen]
   );
+
+  const fetchUserProfile = useCallback(async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/user/profile`);
+      if (response.ok) {
+        const userData = await response.json();
+        setUserProfile(userData);
+      }
+    } catch (error) {
+      console.error('Error fetching user profile:', error);
+      // Keep default values on error
+    }
+  }, []);
 
   const fetchMarketData = useCallback(async () => {
     try {
@@ -82,10 +100,11 @@ const Menu = React.memo(() => {
   }, [marketData]);
 
   useEffect(() => {
+    fetchUserProfile();
     fetchMarketData();
     const interval = setInterval(fetchMarketData, 120000); // Update every 2 minutes
     return () => clearInterval(interval);
-  }, [fetchMarketData]);
+  }, [fetchUserProfile, fetchMarketData]);
 
   // ====== existing memo styles (unchanged where not necessary) ======
   const navWrap = useMemo(
@@ -422,8 +441,12 @@ const Menu = React.memo(() => {
         </span>
 
         <div className="profile" onClick={handleProfileClick} style={profileStyle}>
-          <div className="avatar" style={avatar}>MS</div>
-          <p className="username" style={usernameStyle}>FJP018</p>
+          <div className="avatar" style={avatar}>
+            {userProfile.username ? userProfile.username.split(' ').map(name => name[0]).join('').toUpperCase() : 'MS'}
+          </div>
+          <p className="username" style={usernameStyle}>
+            {userProfile.username ? userProfile.username.split(' ')[0] : 'FJP018'}
+          </p>
         </div>
 
         {isProfileDropdownOpen && (
@@ -432,8 +455,8 @@ const Menu = React.memo(() => {
             <div style={ddHeader}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <div>
-                  <p style={ddName}>Mahammad Sayad</p>
-                  <p style={ddEmail}>sahadsaad186@gmail.com</p>
+                  <p style={ddName}>{userProfile.username}</p>
+                  <p style={ddEmail}>{userProfile.email}</p>
                 </div>
                 <span title="Edit" style={{ color: "#6f7680", cursor: "pointer" }}>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
