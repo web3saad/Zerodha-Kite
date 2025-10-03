@@ -23,9 +23,14 @@ const accountRoute = require("./routes/accountRoute");
 const consoleRoute = require("./routes/consoleRoute");
 const portfolioRoute = require("./routes/portfolioRoute");
 
-// Configure CORS to allow your Vercel frontend and local development
+// Configure CORS to allow your frontend domains and local development
 app.use(cors({
-  origin: ['https://zerodha-kite-zeta.vercel.app', 'http://localhost:3000', 'http://localhost:3001'],
+  origin: [
+    'https://zerodha-kite-zeta.vercel.app', 
+    'https://desktop.zherodha.com', 
+    'http://localhost:3000', 
+    'http://localhost:3001'
+  ],
   credentials: true
 }));
 app.use(bodyParser.json());
