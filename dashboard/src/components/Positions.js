@@ -234,12 +234,8 @@ export default function Positions() {
                     <span 
                       onClick={(e) => handleStockClick(e, r)}
                       style={{
-                        color: '#2f6bd7',
-                        cursor: 'pointer',
-                        textDecoration: 'none'
+                        cursor: 'pointer'
                       }}
-                      onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
-                      onMouseLeave={(e) => e.target.style.textDecoration = 'none'}
                     >
                       {r.instrument}
                     </span>
