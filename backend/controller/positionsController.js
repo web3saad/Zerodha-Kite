@@ -10,8 +10,6 @@ module.exports.addPosition = async (req, res) => {
   try {
     const { stock, orderType, quantity, price, exchange } = req.body;
     
-    console.log('Adding new position for stock:', stock.name || stock.symbol);
-    
     // Get current positions data from PositionsDetailModel (the one used by the UI)
     let positionsData = await PositionsDetailModel.findOne();
     
@@ -23,21 +21,13 @@ module.exports.addPosition = async (req, res) => {
     
     // Check if position already exists - use exact match for the specific stock
     const stockIdentifier = stock.name || stock.symbol;
-    console.log('Looking for position with identifier:', stockIdentifier);
-    console.log('Current positions:', positionsData.positions.map(p => ({ instrument: p.instrument, qty: p.qty })));
-    
     const existingPositionIndex = positionsData.positions.findIndex(
       pos => pos.instrument === stockIdentifier
     );
     
-    console.log('Found position at index:', existingPositionIndex);
-    
     if (existingPositionIndex >= 0) {
       // Update existing position - PRESERVE the original instrument name
-      console.log('UPDATING existing position at index', existingPositionIndex);
       const existingPosition = positionsData.positions[existingPositionIndex];
-      console.log('Original instrument name:', existingPosition.instrument);
-      
       const currentAvg = parseFloat(existingPosition.avg.replace(/,/g, ''));
       const currentQty = existingPosition.qty;
       
@@ -45,12 +35,10 @@ module.exports.addPosition = async (req, res) => {
       
       if (orderType === 'SELL') {
         // For SELL orders, reduce the quantity
-        console.log('Processing SELL order - reducing quantity');
         newTotalQty = currentQty - quantity;
         
         // If selling all or more than available, remove the position
         if (newTotalQty <= 0) {
-          console.log('Selling all quantity - removing position');
           positionsData.positions.splice(existingPositionIndex, 1);
           positionsData.count = positionsData.positions.length;
           positionsData.markModified('positions');
@@ -66,7 +54,6 @@ module.exports.addPosition = async (req, res) => {
         newAvgPrice = currentAvg;
       } else {
         // For BUY orders, add to the quantity and recalculate average
-        console.log('Processing BUY order - adding quantity');
         newTotalQty = currentQty + quantity;
         newAvgPrice = ((currentAvg * Math.abs(currentQty)) + (price * quantity)) / Math.abs(newTotalQty);
       }
@@ -82,17 +69,11 @@ module.exports.addPosition = async (req, res) => {
       position.ltp = price.toFixed(2);
       position.pnl = pnlValue > 0 ? `+${pnlValue.toFixed(2)}` : pnlValue.toFixed(2);
       position.chg = `${chgPercent.toFixed(2)}%`;
-      // DO NOT MODIFY instrument - it should stay the same!
-      
-      console.log('After update - instrument name is still:', position.instrument);
-      console.log('New quantity:', newTotalQty);
       
       // Explicitly mark the position as modified
       positionsData.markModified('positions');
     } else {
       // Add new position using PositionsDetailModel format
-      console.log('Creating new position');
-      
       // For SELL orders on new positions, create negative quantity (short position)
       const positionQty = orderType === 'SELL' ? -quantity : quantity;
       
