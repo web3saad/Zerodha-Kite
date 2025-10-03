@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { API_BASE_URL } from '../utils/api';
 
 // Dynamic positions component that fetches data from backend
 export default function Positions() {
@@ -9,7 +10,7 @@ export default function Positions() {
   const font =
     "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif";
 
-  const API_BASE = 'http://localhost:3000';
+  const API_BASE = API_BASE_URL;
 
   useEffect(() => {
     fetchPositionsData();
