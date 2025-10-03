@@ -43,24 +43,27 @@ const TradingModal = ({
         exchange: 'BSE'
       };
 
-      // Only add to positions if it's a BUY order
-      if (side === 'buy') {
-        const response = await fetch(`${API_BASE_URL}/positions/add`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(orderData),
-        });
+      // Call positions API for both BUY and SELL orders
+      const response = await fetch(`${API_BASE_URL}/positions/add`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(orderData),
+      });
 
-        if (response.ok) {
-          alert(`${side.toUpperCase()} order placed successfully!\\n\\nStock: ${orderData.stock.name}\\nQuantity: ${orderData.quantity}\\nPrice: ₹${orderData.price.toFixed(2)}\\nTotal: ₹${(qty * marketPrice).toFixed(2)}\\n\\nPosition added to your portfolio!`);
+      if (response.ok) {
+        const result = await response.json();
+        
+        // Show appropriate success message
+        if (side === 'sell' && result.message?.includes('sold completely and removed')) {
+          alert(`${side.toUpperCase()} order placed successfully!\\n\\nStock: ${orderData.stock.name}\\nQuantity: ${orderData.quantity}\\nPrice: ₹${orderData.price.toFixed(2)}\\nTotal: ₹${(qty * marketPrice).toFixed(2)}\\n\\nPosition sold completely and removed from portfolio!`);
         } else {
-          alert(`${side.toUpperCase()} order placed successfully!\\n\\nStock: ${orderData.stock.name}\\nQuantity: ${orderData.quantity}\\nPrice: ₹${orderData.price.toFixed(2)}\\nTotal: ₹${(qty * marketPrice).toFixed(2)}\\n\\nNote: Failed to add to positions.`);
+          const actionText = side === 'buy' ? 'added to' : 'updated in';
+          alert(`${side.toUpperCase()} order placed successfully!\\n\\nStock: ${orderData.stock.name}\\nQuantity: ${orderData.quantity}\\nPrice: ₹${orderData.price.toFixed(2)}\\nTotal: ₹${(qty * marketPrice).toFixed(2)}\\n\\nPosition ${actionText} your portfolio!`);
         }
       } else {
-        // For SELL orders, just show success message
-        alert(`${side.toUpperCase()} order placed successfully!\\n\\nStock: ${orderData.stock.name}\\nQuantity: ${orderData.quantity}\\nPrice: ₹${orderData.price.toFixed(2)}\\nTotal: ₹${(qty * marketPrice).toFixed(2)}`);
+        alert(`${side.toUpperCase()} order placed successfully!\\n\\nStock: ${orderData.stock.name}\\nQuantity: ${orderData.quantity}\\nPrice: ₹${orderData.price.toFixed(2)}\\nTotal: ₹${(qty * marketPrice).toFixed(2)}\\n\\nNote: Failed to update positions.`);
       }
 
       onClose();
