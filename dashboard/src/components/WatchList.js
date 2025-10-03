@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { API_BASE_URL } from '../utils/api';
 
 import WacthListItem from "./WatchListItem";
 import BuyActionWindow from "./BuyActionWindow";
@@ -275,7 +276,7 @@ const WatchList = () => {
     try {
       if (orderData.orderType === 'BUY') {
         // Add to positions for BUY orders
-        const response = await fetch(`https://zerodha-kite-890j.onrender.com/positions/add`, {
+        const response = await fetch(`${API_BASE_URL}/positions/add`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -299,7 +300,7 @@ const WatchList = () => {
         }
       } else if (orderData.orderType === 'SELL') {
         // Handle SELL orders - reduce or remove from positions
-        const response = await fetch(`https://zerodha-kite-890j.onrender.com/positions/sell`, {
+        const response = await fetch(`${API_BASE_URL}/positions/sell`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

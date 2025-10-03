@@ -1,4 +1,5 @@
 const { PositionsModel } = require("../model/PositionsModel");
+const { PositionsDetailModel } = require("../model/PositionsDetailModel");
 
 module.exports.index = async (req, res) => {
   let allPositions = await PositionsModel.find({});
@@ -11,20 +12,13 @@ module.exports.addPosition = async (req, res) => {
     
     console.log('Adding new position:', req.body);
     
-    // Get current positions data or create new if none exists
-    let positionsData = await PositionsModel.findOne();
+    // Get current positions data from PositionsDetailModel (the one used by the UI)
+    let positionsData = await PositionsDetailModel.findOne();
     
     if (!positionsData) {
-      // Create initial positions structure
-      positionsData = new PositionsModel({
-        positions: [],
-        breakdown: {
-          totalPnl: 0,
-          totalValue: 0,
-          totalInvestment: 0,
-          dayPnl: 0
-        }
-      });
+      // Create initial positions structure using PositionsDetailModel format
+      positionsData = new PositionsDetailModel({});
+      await positionsData.save();
     }
     
     // Check if position already exists
@@ -35,52 +29,51 @@ module.exports.addPosition = async (req, res) => {
     if (existingPositionIndex >= 0) {
       // Update existing position
       const existingPosition = positionsData.positions[existingPositionIndex];
-      const newTotalQty = existingPosition.qty + quantity;
-      const newAvgPrice = ((existingPosition.avg * existingPosition.qty) + (price * quantity)) / newTotalQty;
+      const currentAvg = parseFloat(existingPosition.avg.replace(/,/g, ''));
+      const currentQty = existingPosition.qty;
+      const newTotalQty = currentQty + quantity;
+      const newAvgPrice = ((currentAvg * Math.abs(currentQty)) + (price * quantity)) / Math.abs(newTotalQty);
+      
+      // Calculate P&L
+      const pnlValue = (price - newAvgPrice) * Math.abs(newTotalQty);
+      const chgPercent = ((price - newAvgPrice) / newAvgPrice * 100);
       
       positionsData.positions[existingPositionIndex] = {
         ...existingPosition,
         qty: newTotalQty,
-        avg: newAvgPrice,
-        ltp: price, // Update LTP to current price
-        cur_val: newTotalQty * price,
-        pnl: (price - newAvgPrice) * newTotalQty,
-        net_chg: ((price - newAvgPrice) / newAvgPrice * 100).toFixed(2) + '%',
-        day_chg: Math.random() * 2 - 1 // Random day change
+        avg: newAvgPrice.toFixed(2),
+        ltp: price.toFixed(2),
+        pnl: pnlValue > 0 ? `+${pnlValue.toFixed(2)}` : pnlValue.toFixed(2),
+        chg: `${chgPercent.toFixed(2)}%`
       };
     } else {
-      // Add new position
+      // Add new position using PositionsDetailModel format
       const newPosition = {
+        product: "NRML",
         instrument: stock.name || stock.symbol,
+        exchange: exchange || "NSE",
         qty: quantity,
-        avg: price,
-        ltp: price,
-        cur_val: quantity * price,
-        pnl: 0, // No P&L initially
-        net_chg: '0.00%',
-        day_chg: Math.random() * 2 - 1 // Random day change
+        avg: price.toFixed(2),
+        ltp: price.toFixed(2),
+        pnl: "0.00", // No P&L initially
+        chg: "0.00%",
+        holding: false,
+        dim: false
       };
       
       positionsData.positions.push(newPosition);
+      positionsData.count = positionsData.positions.length;
     }
     
-    // Recalculate totals
-    let totalValue = 0;
-    let totalInvestment = 0;
-    let totalPnl = 0;
-    
-    positionsData.positions.forEach(pos => {
-      totalValue += pos.cur_val;
-      totalInvestment += pos.avg * pos.qty;
-      totalPnl += pos.pnl;
-    });
-    
-    positionsData.breakdown = {
-      totalPnl: totalPnl,
-      totalValue: totalValue,
-      totalInvestment: totalInvestment,
-      dayPnl: Math.random() * 1000 - 500 // Random day P&L
-    };
+    // Update totals if they exist
+    if (positionsData.totals) {
+      let totalPnl = 0;
+      positionsData.positions.forEach(pos => {
+        const pnlValue = parseFloat(pos.pnl.replace(/[+,]/g, ''));
+        totalPnl += pnlValue;
+      });
+      positionsData.totals.totalPnl = totalPnl.toFixed(2);
+    }
     
     await positionsData.save();
     

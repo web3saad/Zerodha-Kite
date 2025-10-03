@@ -3,6 +3,7 @@ import { Grow, Tooltip } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from '../utils/api';
 
 function WatchListAction({ uid, symbol = "HDFCBANK", bse = "₹945.15", nse = "₹945.10" }) {
   const [showTicket, setShowTicket] = useState(false);
@@ -47,7 +48,7 @@ function WatchListAction({ uid, symbol = "HDFCBANK", bse = "₹945.15", nse = "�
 
       // Only add to positions if it's a BUY order
       if (side === 'buy') {
-        const response = await fetch(`${process.env.REACT_APP_API_URL || 'https://zerodha-kite-890j.onrender.com'}/positions/add`, {
+        const response = await fetch(`${API_BASE_URL}/positions/add`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
