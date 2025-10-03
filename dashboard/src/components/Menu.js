@@ -23,22 +23,33 @@ const Menu = React.memo(() => {
 
   const fetchUserProfile = useCallback(async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/user/profile`);
+      const response = await fetch(`${API_BASE_URL}/user/profile`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
       if (response.ok) {
         const userData = await response.json();
         setUserProfile(userData);
+      } else {
+        console.log('Failed to fetch user profile, using defaults');
       }
     } catch (error) {
       console.error('Error fetching user profile:', error);
-      // Keep default values on error
+      // Keep default values on error - this is expected when backend is not available
+      setUserProfile({
+        username: "Mohammad Sayad",
+        email: "sahadsaad186@gmail.com"
+      });
     }
   }, []);
 
   const fetchMarketData = useCallback(async () => {
     try {
       const promises = [
-        fetch(`http://localhost:3000/api/stocks/stock/^NSEI`).catch(() => null),
-        fetch(`http://localhost:3000/api/stocks/stock/^BSESN`).catch(() => null),
+        fetch(`${API_BASE_URL}/api/stocks/stock/^NSEI`).catch(() => null),
+        fetch(`${API_BASE_URL}/api/stocks/stock/^BSESN`).catch(() => null),
       ];
 
       const [niftyResponse, sensexResponse] = await Promise.all(promises);
@@ -96,6 +107,7 @@ const Menu = React.memo(() => {
       setMarketData(updates);
     } catch (error) {
       console.error('Error fetching market data:', error);
+      // Keep existing market data on error - don't break the UI
     }
   }, [marketData]);
 
