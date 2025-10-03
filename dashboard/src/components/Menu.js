@@ -492,47 +492,42 @@ const Menu = React.memo(() => {
                 </a>
               </li>
               <li>
-                <Link to="/" style={{ textDecoration: "none" }}>
+                <a href="https://coin.zerodha.com/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
                   <div style={ddItem}>
-               
                     <span>Coin</span>
                   </div>
-                </Link>
+                </a>
               </li>
               <li>
-                <Link to="/" style={{ textDecoration: "none" }}>
+                <a href="https://support.zerodha.com/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
                   <div style={ddItem}>
-                   
                     <span>Support</span>
                   </div>
-                </Link>
+                </a>
               </li>
 
               <hr style={ddDivider} />
 
               <li>
-                <Link to="/" style={{ textDecoration: "none" }}>
+                <a href="https://zerodha.com/refer/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
                   <div style={ddItem}>
-                    
                     <span>Invite friends</span>
                   </div>
-                </Link>
+                </a>
               </li>
               <li>
-                <Link to="/" style={{ textDecoration: "none" }}>
+                <a href="https://support.zerodha.com/category/trading-and-markets/general-kite/others-kite/articles/keyboard-shortcuts" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
                   <div style={ddItem}>
-                    
                     <span>Keyboard shortcuts</span>
                   </div>
-                </Link>
+                </a>
               </li>
               <li>
-                <Link to="/" style={{ textDecoration: "none" }}>
+                <a href="https://kite.trade/docs/kite/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
                   <div style={ddItem}>
-                
                     <span>User manual</span>
                   </div>
-                </Link>
+                </a>
               </li>
 
               <hr style={ddDivider} />
