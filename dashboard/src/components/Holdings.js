@@ -1,10 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { API_BASE_URL } from '../utils/api';
+import StockActionDropdown from './StockActionDropdown';
+import TradingModal from './TradingModal';
 
 export default function Holdings() {
   const [holdingsData, setHoldingsData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [priceChanges, setPriceChanges] = useState({});
+  const [dropdownState, setDropdownState] = useState({
+    isOpen: false,
+    stock: null,
+    position: { top: 0, left: 0 }
+  });
+  const [showBuyModal, setShowBuyModal] = useState(false);
+  const [showSellModal, setShowSellModal] = useState(false);
+  const [selectedStock, setSelectedStock] = useState(null);
 
   // Inter 400 everywhere
   const font =
@@ -91,6 +101,47 @@ export default function Holdings() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleStockClick = (event, holding) => {
+    event.preventDefault();
+    const rect = event.target.getBoundingClientRect();
+    setDropdownState({
+      isOpen: true,
+      stock: {
+        name: holding.instrument,
+        symbol: holding.instrument,
+        ltp: holding.ltp,
+        qty: holding.qty
+      },
+      position: {
+        top: rect.bottom + window.scrollY,
+        left: rect.left + window.scrollX
+      }
+    });
+  };
+
+  const handleCloseDropdown = () => {
+    setDropdownState({
+      isOpen: false,
+      stock: null,
+      position: { top: 0, left: 0 }
+    });
+  };
+
+  const handleExit = (stock) => {
+    setSelectedStock(stock);
+    setShowSellModal(true);
+  };
+
+  const handleAdd = (stock) => {
+    setSelectedStock(stock);
+    setShowBuyModal(true);
+  };
+
+  const handleChart = (stock) => {
+    console.log('Opening chart for:', stock.name);
+    // TODO: Implement chart functionality
   };
 
   if (loading) {
@@ -221,7 +272,20 @@ export default function Holdings() {
                 
                 return (
                   <tr key={i}>
-                    <td>{holding.instrument}</td>
+                    <td>
+                      <span 
+                        onClick={(e) => handleStockClick(e, holding)}
+                        style={{
+                          color: '#2f6bd7',
+                          cursor: 'pointer',
+                          textDecoration: 'none'
+                        }}
+                        onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
+                        onMouseLeave={(e) => e.target.style.textDecoration = 'none'}
+                      >
+                        {holding.instrument}
+                      </span>
+                    </td>
                     <td>{holding.qty}</td>
                     <td>{holding.avgCost}</td>
                     <td className="ltp-cell">
@@ -272,6 +336,40 @@ export default function Holdings() {
           </div>
         </div>
       </div>
+
+      {/* Stock Action Dropdown */}
+      <StockActionDropdown
+        stock={dropdownState.stock}
+        isOpen={dropdownState.isOpen}
+        onClose={handleCloseDropdown}
+        position={dropdownState.position}
+        onExit={handleExit}
+        onAdd={handleAdd}
+        onChart={handleChart}
+        isPosition={false}
+      />
+
+      {/* Buy Modal */}
+      <TradingModal
+        stock={selectedStock}
+        side="buy"
+        isOpen={showBuyModal}
+        onClose={() => {
+          setShowBuyModal(false);
+          setSelectedStock(null);
+        }}
+      />
+
+      {/* Sell Modal */}
+      <TradingModal
+        stock={selectedStock}
+        side="sell"
+        isOpen={showSellModal}
+        onClose={() => {
+          setShowSellModal(false);
+          setSelectedStock(null);
+        }}
+      />
     </div>
   );
 }

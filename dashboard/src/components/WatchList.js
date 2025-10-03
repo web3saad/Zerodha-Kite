@@ -180,7 +180,7 @@ const WatchList = () => {
       setLoading(true);
       const promises = stockSymbols.map(async (stock) => {
         try {
-          const response = await fetch(`https://zerodha-kite-890j.onrender.com/api/stocks/stock/${stock.symbol}`);
+          const response = await fetch(`${API_BASE_URL}/api/stocks/stock/${stock.symbol}`);
           const data = await response.json();
           
           if (data.chart?.result?.[0]) {
@@ -352,7 +352,7 @@ const WatchList = () => {
   const addToWatchlist = async (stock) => {
     try {
       // Fetch real data for the stock
-      const response = await fetch(`https://zerodha-kite-890j.onrender.com/api/stocks/stock/${stock.symbol}`);
+      const response = await fetch(`${API_BASE_URL}/api/stocks/stock/${stock.symbol}`);
       const data = await response.json();
       
       let newStock;

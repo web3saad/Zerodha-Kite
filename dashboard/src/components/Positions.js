@@ -1,11 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { API_BASE_URL } from '../utils/api';
+import StockActionDropdown from './StockActionDropdown';
+import TradingModal from './TradingModal';
 
 // Dynamic positions component that fetches data from backend
 export default function Positions() {
   const [positionsData, setPositionsData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [priceChanges, setPriceChanges] = useState({});
+  const [dropdownState, setDropdownState] = useState({
+    isOpen: false,
+    stock: null,
+    position: { top: 0, left: 0 }
+  });
+  const [showBuyModal, setShowBuyModal] = useState(false);
+  const [showSellModal, setShowSellModal] = useState(false);
+  const [selectedStock, setSelectedStock] = useState(null);
 
   const font =
     "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif";
@@ -97,6 +107,47 @@ export default function Positions() {
     }
   };
 
+  const handleStockClick = (event, position) => {
+    event.preventDefault();
+    const rect = event.target.getBoundingClientRect();
+    setDropdownState({
+      isOpen: true,
+      stock: {
+        name: position.instrument,
+        symbol: position.instrument,
+        ltp: position.ltp,
+        qty: position.qty
+      },
+      position: {
+        top: rect.bottom + window.scrollY,
+        left: rect.left + window.scrollX
+      }
+    });
+  };
+
+  const handleCloseDropdown = () => {
+    setDropdownState({
+      isOpen: false,
+      stock: null,
+      position: { top: 0, left: 0 }
+    });
+  };
+
+  const handleExit = (stock) => {
+    setSelectedStock(stock);
+    setShowSellModal(true);
+  };
+
+  const handleAdd = (stock) => {
+    setSelectedStock(stock);
+    setShowBuyModal(true);
+  };
+
+  const handleChart = (stock) => {
+    console.log('Opening chart for:', stock.name);
+    // TODO: Implement chart functionality
+  };
+
   if (loading) {
     return <div style={{ padding: '20px', textAlign: 'center' }}>Loading positions...</div>;
   }
@@ -180,7 +231,18 @@ export default function Positions() {
                     {r.holding && <span className="pill holding">HOLDING</span>}
                   </td>
                   <td>
-                    <span>{r.instrument}</span>
+                    <span 
+                      onClick={(e) => handleStockClick(e, r)}
+                      style={{
+                        color: '#2f6bd7',
+                        cursor: 'pointer',
+                        textDecoration: 'none'
+                      }}
+                      onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
+                      onMouseLeave={(e) => e.target.style.textDecoration = 'none'}
+                    >
+                      {r.instrument}
+                    </span>
                     <span className="muted">{r.exchange}</span>
                   </td>
                   <td className={`right ${r.qty < 0 ? 'loss':''}`}>{r.qty}</td>
@@ -229,6 +291,40 @@ export default function Positions() {
           ))}
         </div>
       </div>
+
+      {/* Stock Action Dropdown */}
+      <StockActionDropdown
+        stock={dropdownState.stock}
+        isOpen={dropdownState.isOpen}
+        onClose={handleCloseDropdown}
+        position={dropdownState.position}
+        onExit={handleExit}
+        onAdd={handleAdd}
+        onChart={handleChart}
+        isPosition={true}
+      />
+
+      {/* Buy Modal */}
+      <TradingModal
+        stock={selectedStock}
+        side="buy"
+        isOpen={showBuyModal}
+        onClose={() => {
+          setShowBuyModal(false);
+          setSelectedStock(null);
+        }}
+      />
+
+      {/* Sell Modal */}
+      <TradingModal
+        stock={selectedStock}
+        side="sell"
+        isOpen={showSellModal}
+        onClose={() => {
+          setShowSellModal(false);
+          setSelectedStock(null);
+        }}
+      />
     </div>
   );
 }
