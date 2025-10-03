@@ -116,7 +116,6 @@ const StockActionDropdown = ({
         onMouseLeave={handleMouseLeave}
         onClick={handleExit}
       >
-        <span>🚪</span>
         <span>Exit</span>
       </div>
 
@@ -127,7 +126,6 @@ const StockActionDropdown = ({
         onMouseLeave={handleMouseLeave}
         onClick={handleAdd}
       >
-        <span>➕</span>
         <span>Add</span>
       </div>
 
@@ -142,7 +140,6 @@ const StockActionDropdown = ({
           onMouseLeave={handleMouseLeave}
           onClick={handleConvert}
         >
-          <span>🔄</span>
           <span>Convert</span>
         </div>
       )}
@@ -154,7 +151,6 @@ const StockActionDropdown = ({
         onMouseLeave={handleMouseLeave}
         onClick={handleInfo}
       >
-        <span>ℹ️</span>
         <span>Info</span>
       </div>
 
@@ -165,7 +161,6 @@ const StockActionDropdown = ({
         onMouseLeave={handleMouseLeave}
         onClick={handleCreateAlert}
       >
-        <span>🚨</span>
         <span>Create alert</span>
       </div>
 
@@ -176,7 +171,6 @@ const StockActionDropdown = ({
         onMouseLeave={handleMouseLeave}
         onClick={handleMarketDepth}
       >
-        <span>📊</span>
         <span>Market depth</span>
       </div>
 
@@ -187,7 +181,6 @@ const StockActionDropdown = ({
         onMouseLeave={handleMouseLeave}
         onClick={handleChart}
       >
-        <span>📈</span>
         <span>Chart</span>
       </div>
 
@@ -198,7 +191,6 @@ const StockActionDropdown = ({
         onMouseLeave={handleMouseLeave}
         onClick={handleAddToWatchlist}
       >
-        <span>👁️</span>
         <span>Add to marketwatch</span>
       </div>
 
@@ -209,7 +201,6 @@ const StockActionDropdown = ({
         onMouseLeave={handleMouseLeave}
         onClick={handleTechnicals}
       >
-        <span>⚡</span>
         <span>Technicals</span>
       </div>
     </div>

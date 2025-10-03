@@ -52,24 +52,18 @@ const TradingModal = ({
         body: JSON.stringify(orderData),
       });
 
+      // Silent operation - no alert messages
       if (response.ok) {
-        const result = await response.json();
-        
-        // Show appropriate success message
-        if (side === 'sell' && result.message?.includes('sold completely and removed')) {
-          alert(`${side.toUpperCase()} order placed successfully!\\n\\nStock: ${orderData.stock.name}\\nQuantity: ${orderData.quantity}\\nPrice: ₹${orderData.price.toFixed(2)}\\nTotal: ₹${(qty * marketPrice).toFixed(2)}\\n\\nPosition sold completely and removed from portfolio!`);
-        } else {
-          const actionText = side === 'buy' ? 'added to' : 'updated in';
-          alert(`${side.toUpperCase()} order placed successfully!\\n\\nStock: ${orderData.stock.name}\\nQuantity: ${orderData.quantity}\\nPrice: ₹${orderData.price.toFixed(2)}\\nTotal: ₹${(qty * marketPrice).toFixed(2)}\\n\\nPosition ${actionText} your portfolio!`);
-        }
+        // Order processed successfully
       } else {
-        alert(`${side.toUpperCase()} order placed successfully!\\n\\nStock: ${orderData.stock.name}\\nQuantity: ${orderData.quantity}\\nPrice: ₹${orderData.price.toFixed(2)}\\nTotal: ₹${(qty * marketPrice).toFixed(2)}\\n\\nNote: Failed to update positions.`);
+        // Order failed but we'll handle silently
+        console.log('Failed to update positions, but order may have been processed');
       }
 
       onClose();
     } catch (error) {
       console.error('Error submitting order:', error);
-      alert(`Error placing ${side.toUpperCase()} order. Please try again.`);
+      // Silent error handling - no alert
     } finally {
       setIsSubmitting(false);
     }
