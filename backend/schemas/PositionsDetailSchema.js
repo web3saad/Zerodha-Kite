@@ -2,8 +2,8 @@ const { Schema } = require("mongoose");
 
 const PositionItemSchema = new Schema({
   product: { type: String, required: true, default: "NRML" },
-  instrument: { type: String, required: true, default: "USDINR 23JUN FUT" },
-  exchange: { type: String, required: true, default: "CDS" },
+  instrument: { type: String, required: true }, // Removed default value
+  exchange: { type: String, required: true, default: "NSE" },
   qty: { type: Number, required: true, default: -1 },
   avg: { type: String, required: true, default: "82.0375" },
   ltp: { type: String, required: true, default: "82.5275" },

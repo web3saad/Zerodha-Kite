@@ -10,7 +10,7 @@ module.exports.addPosition = async (req, res) => {
   try {
     const { stock, orderType, quantity, price, exchange } = req.body;
     
-    console.log('Adding new position:', req.body);
+    console.log('Adding new position for stock:', stock.name || stock.symbol);
     
     // Get current positions data from PositionsDetailModel (the one used by the UI)
     let positionsData = await PositionsDetailModel.findOne();
@@ -21,14 +21,23 @@ module.exports.addPosition = async (req, res) => {
       await positionsData.save();
     }
     
-    // Check if position already exists
+    // Check if position already exists - use exact match for the specific stock
+    const stockIdentifier = stock.name || stock.symbol;
+    console.log('Looking for position with identifier:', stockIdentifier);
+    console.log('Current positions:', positionsData.positions.map(p => ({ instrument: p.instrument, qty: p.qty })));
+    
     const existingPositionIndex = positionsData.positions.findIndex(
-      pos => pos.instrument === stock.name || pos.instrument === stock.symbol
+      pos => pos.instrument === stockIdentifier
     );
     
+    console.log('Found position at index:', existingPositionIndex);
+    
     if (existingPositionIndex >= 0) {
-      // Update existing position
+      // Update existing position - PRESERVE the original instrument name
+      console.log('UPDATING existing position at index', existingPositionIndex);
       const existingPosition = positionsData.positions[existingPositionIndex];
+      console.log('Original instrument name:', existingPosition.instrument);
+      
       const currentAvg = parseFloat(existingPosition.avg.replace(/,/g, ''));
       const currentQty = existingPosition.qty;
       const newTotalQty = currentQty + quantity;
@@ -38,14 +47,19 @@ module.exports.addPosition = async (req, res) => {
       const pnlValue = (price - newAvgPrice) * Math.abs(newTotalQty);
       const chgPercent = ((price - newAvgPrice) / newAvgPrice * 100);
       
-      positionsData.positions[existingPositionIndex] = {
-        ...existingPosition,
-        qty: newTotalQty,
-        avg: newAvgPrice.toFixed(2),
-        ltp: price.toFixed(2),
-        pnl: pnlValue > 0 ? `+${pnlValue.toFixed(2)}` : pnlValue.toFixed(2),
-        chg: `${chgPercent.toFixed(2)}%`
-      };
+      // Update only specific fields while preserving the rest
+      const position = positionsData.positions[existingPositionIndex];
+      position.qty = newTotalQty;
+      position.avg = newAvgPrice.toFixed(2);
+      position.ltp = price.toFixed(2);
+      position.pnl = pnlValue > 0 ? `+${pnlValue.toFixed(2)}` : pnlValue.toFixed(2);
+      position.chg = `${chgPercent.toFixed(2)}%`;
+      // DO NOT MODIFY instrument - it should stay the same!
+      
+      console.log('After update - instrument name is still:', position.instrument);
+      
+      // Explicitly mark the position as modified
+      positionsData.markModified('positions');
     } else {
       // Add new position using PositionsDetailModel format
       const newPosition = {
