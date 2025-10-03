@@ -40,8 +40,36 @@ module.exports.addPosition = async (req, res) => {
       
       const currentAvg = parseFloat(existingPosition.avg.replace(/,/g, ''));
       const currentQty = existingPosition.qty;
-      const newTotalQty = currentQty + quantity;
-      const newAvgPrice = ((currentAvg * Math.abs(currentQty)) + (price * quantity)) / Math.abs(newTotalQty);
+      
+      let newTotalQty, newAvgPrice;
+      
+      if (orderType === 'SELL') {
+        // For SELL orders, reduce the quantity
+        console.log('Processing SELL order - reducing quantity');
+        newTotalQty = currentQty - quantity;
+        
+        // If selling all or more than available, remove the position
+        if (newTotalQty <= 0) {
+          console.log('Selling all quantity - removing position');
+          positionsData.positions.splice(existingPositionIndex, 1);
+          positionsData.count = positionsData.positions.length;
+          positionsData.markModified('positions');
+          
+          await positionsData.save();
+          return res.status(200).json({
+            message: `Position for ${stockIdentifier} sold completely and removed`,
+            data: positionsData
+          });
+        }
+        
+        // Keep the same average price for sells
+        newAvgPrice = currentAvg;
+      } else {
+        // For BUY orders, add to the quantity and recalculate average
+        console.log('Processing BUY order - adding quantity');
+        newTotalQty = currentQty + quantity;
+        newAvgPrice = ((currentAvg * Math.abs(currentQty)) + (price * quantity)) / Math.abs(newTotalQty);
+      }
       
       // Calculate P&L
       const pnlValue = (price - newAvgPrice) * Math.abs(newTotalQty);
@@ -57,16 +85,22 @@ module.exports.addPosition = async (req, res) => {
       // DO NOT MODIFY instrument - it should stay the same!
       
       console.log('After update - instrument name is still:', position.instrument);
+      console.log('New quantity:', newTotalQty);
       
       // Explicitly mark the position as modified
       positionsData.markModified('positions');
     } else {
       // Add new position using PositionsDetailModel format
+      console.log('Creating new position');
+      
+      // For SELL orders on new positions, create negative quantity (short position)
+      const positionQty = orderType === 'SELL' ? -quantity : quantity;
+      
       const newPosition = {
         product: "NRML",
         instrument: stock.name || stock.symbol,
         exchange: exchange || "NSE",
-        qty: quantity,
+        qty: positionQty,
         avg: price.toFixed(2),
         ltp: price.toFixed(2),
         pnl: "0.00", // No P&L initially

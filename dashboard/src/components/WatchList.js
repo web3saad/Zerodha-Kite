@@ -27,6 +27,35 @@ const WatchList = () => {
       { symbol: "^BSESN", name: "SENSEX", fullName: "SENSEX", type: "INDICES", exchange: "BSE" },
       { symbol: "^NSEMDCP100", name: "NIFTY MIDCAP 100", fullName: "NIFTY MIDCAP 100", type: "INDICES", exchange: "NSE" },
       { symbol: "^BSEBANKEX", name: "BANKEX", fullName: "BSE INDEX BANKEX", type: "INDICES", exchange: "BSE" },
+      
+      // Nifty Derivatives - Current Month
+      { symbol: "NIFTY25JANFUT", name: "NIFTY 25JAN FUT", fullName: "NIFTY 50 Jan 2025 Future", type: "FUT", exchange: "NSE" },
+      { symbol: "NIFTY25JAN24000CE", name: "NIFTY 25JAN 24000 CE", fullName: "NIFTY 50 Jan 2025 24000 Call", type: "CE", exchange: "NSE" },
+      { symbol: "NIFTY25JAN24000PE", name: "NIFTY 25JAN 24000 PE", fullName: "NIFTY 50 Jan 2025 24000 Put", type: "PE", exchange: "NSE" },
+      { symbol: "NIFTY25JAN24500CE", name: "NIFTY 25JAN 24500 CE", fullName: "NIFTY 50 Jan 2025 24500 Call", type: "CE", exchange: "NSE" },
+      { symbol: "NIFTY25JAN24500PE", name: "NIFTY 25JAN 24500 PE", fullName: "NIFTY 50 Jan 2025 24500 Put", type: "PE", exchange: "NSE" },
+      { symbol: "NIFTY25JAN25000CE", name: "NIFTY 25JAN 25000 CE", fullName: "NIFTY 50 Jan 2025 25000 Call", type: "CE", exchange: "NSE" },
+      { symbol: "NIFTY25JAN25000PE", name: "NIFTY 25JAN 25000 PE", fullName: "NIFTY 50 Jan 2025 25000 Put", type: "PE", exchange: "NSE" },
+      
+      // Bank Nifty Derivatives
+      { symbol: "BANKNIFTY25JANFUT", name: "BANKNIFTY 25JAN FUT", fullName: "BANK NIFTY Jan 2025 Future", type: "FUT", exchange: "NSE" },
+      { symbol: "BANKNIFTY25JAN52000CE", name: "BANKNIFTY 25JAN 52000 CE", fullName: "BANK NIFTY Jan 2025 52000 Call", type: "CE", exchange: "NSE" },
+      { symbol: "BANKNIFTY25JAN52000PE", name: "BANKNIFTY 25JAN 52000 PE", fullName: "BANK NIFTY Jan 2025 52000 Put", type: "PE", exchange: "NSE" },
+      { symbol: "BANKNIFTY25JAN53000CE", name: "BANKNIFTY 25JAN 53000 CE", fullName: "BANK NIFTY Jan 2025 53000 Call", type: "CE", exchange: "NSE" },
+      { symbol: "BANKNIFTY25JAN53000PE", name: "BANKNIFTY 25JAN 53000 PE", fullName: "BANK NIFTY Jan 2025 53000 Put", type: "PE", exchange: "NSE" },
+      { symbol: "BANKNIFTY25JAN54000CE", name: "BANKNIFTY 25JAN 54000 CE", fullName: "BANK NIFTY Jan 2025 54000 Call", type: "CE", exchange: "NSE" },
+      { symbol: "BANKNIFTY25JAN54000PE", name: "BANKNIFTY 25JAN 54000 PE", fullName: "BANK NIFTY Jan 2025 54000 Put", type: "PE", exchange: "NSE" },
+      
+      // Fin Nifty Derivatives
+      { symbol: "FINNIFTY25JANFUT", name: "FINNIFTY 25JAN FUT", fullName: "FIN NIFTY Jan 2025 Future", type: "FUT", exchange: "NSE" },
+      { symbol: "FINNIFTY25JAN23000CE", name: "FINNIFTY 25JAN 23000 CE", fullName: "FIN NIFTY Jan 2025 23000 Call", type: "CE", exchange: "NSE" },
+      { symbol: "FINNIFTY25JAN23000PE", name: "FINNIFTY 25JAN 23000 PE", fullName: "FIN NIFTY Jan 2025 23000 Put", type: "PE", exchange: "NSE" },
+      { symbol: "FINNIFTY25JAN23500CE", name: "FINNIFTY 25JAN 23500 CE", fullName: "FIN NIFTY Jan 2025 23500 Call", type: "CE", exchange: "NSE" },
+      { symbol: "FINNIFTY25JAN23500PE", name: "FINNIFTY 25JAN 23500 PE", fullName: "FIN NIFTY Jan 2025 23500 Put", type: "PE", exchange: "NSE" },
+      { symbol: "FINNIFTY25JAN24000CE", name: "FINNIFTY 25JAN 24000 CE", fullName: "FIN NIFTY Jan 2025 24000 Call", type: "CE", exchange: "NSE" },
+      { symbol: "FINNIFTY25JAN24000PE", name: "FINNIFTY 25JAN 24000 PE", fullName: "FIN NIFTY Jan 2025 24000 Put", type: "PE", exchange: "NSE" },
+      
+      // Original Stocks
       { symbol: "RELIANCE.NS", name: "RELIANCE", fullName: "Reliance Industries Ltd", type: "EQ", exchange: "NSE" },
       { symbol: "TCS.NS", name: "TCS", fullName: "Tata Consultancy Services Ltd", type: "EQ", exchange: "NSE" },
       { symbol: "HDFCBANK.NS", name: "HDFCBANK", fullName: "HDFC Bank Ltd", type: "EQ", exchange: "NSE" },
